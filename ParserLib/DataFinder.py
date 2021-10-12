@@ -31,15 +31,15 @@ class DataFinder:
         }
 
 
-    async def _async_get(self, link):
+    async def _async_get(self, name, link):
         try:
             async with aiohttp.ClientSession() as session:
                 async with session.get(link, timeout=self._timeout) as response:
                     res = await response.read()
                     if res != None:
-                        print(rf'Loaded[{link}]', flush=True)
+                        print(rf'Loaded[{name}][{link}]', flush=True)
                     else:
-                        print(rf'Broken[{link}]', flush=True)
+                        print(rf'Broken[{name}][{link}]', flush=True)
                     return res
         except:
             return None
@@ -78,8 +78,8 @@ class DataFinder:
         tasks = []
 
         print(f'!Loading[{links_length}]', flush=True)
-        for url in links:
-            task = asyncio.ensure_future(self._async_get(url))
+        for name, url in urls.items():
+            task = asyncio.ensure_future(self._async_get(name, url))
             tasks.append(task)
 
         get_results = await asyncio.gather(*tasks)
@@ -105,10 +105,10 @@ class DataFinder:
                 missed_cols = missed_cols.tolist()
                 entries_count = len(single_df)
 
-                print(f'{names[i]}[{entries_count}]:{missed_cols}', flush=True)
+                print(f'Parsed[{names[i]}][{entries_count}]:{missed_cols}', flush=True)
                 n_sites += 1
             except:
-                print(f'{names[i]}[0]:error', flush=True)
+                print(f'Broken[{names[i]}][0]', flush=True)
 
         if self._with_rbk:
 
@@ -120,14 +120,14 @@ class DataFinder:
                 missed_cols = missed_cols.tolist()
                 entries_count = len(single_df)
 
-                print(f'RBC[{entries_count}]:{missed_cols}', flush=True)
+                print(f'Parsed[RBC][{entries_count}]:{missed_cols}', flush=True)
                 n_sites += 1
             except:
-                print(f'RBC[0]:error', flush=True)
+                print(f'Broken[RBC][0]', flush=True)
 
 
         df = pd.concat(dfs, ignore_index=True)
-        print(f'!Completed[{n_sites}]:[{len(df)}]', flush=True)
+        print(f'!Completed[{n_sites}][{len(df)}]', flush=True)
 
         return df
 

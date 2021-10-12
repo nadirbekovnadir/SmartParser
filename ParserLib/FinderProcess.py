@@ -45,7 +45,6 @@ def main():
         text = file.read().replace('\n', '')
     news_urls = json.loads(text)
 
-
     data_finder = DataFinder(with_rbk, timeout)
 
     df = data_finder.parse(news_urls)
