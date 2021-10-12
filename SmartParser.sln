@@ -1,0 +1,35 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31710.8
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestProcess", "TestProcess\TestProcess.csproj", "{1E18C852-5F84-4140-9C4D-701127057AEC}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ParserApp", "ParserApp\ParserApp.csproj", "{D95E3306-9F5C-487F-B914-E5A3D96C9702}"
+EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "ParserLib", "ParserLib\ParserLib.pyproj", "{1ED8D253-3DB0-4D72-92F4-A69ADA73B6A7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1E18C852-5F84-4140-9C4D-701127057AEC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E18C852-5F84-4140-9C4D-701127057AEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E18C852-5F84-4140-9C4D-701127057AEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E18C852-5F84-4140-9C4D-701127057AEC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D95E3306-9F5C-487F-B914-E5A3D96C9702}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D95E3306-9F5C-487F-B914-E5A3D96C9702}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D95E3306-9F5C-487F-B914-E5A3D96C9702}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D95E3306-9F5C-487F-B914-E5A3D96C9702}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1ED8D253-3DB0-4D72-92F4-A69ADA73B6A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1ED8D253-3DB0-4D72-92F4-A69ADA73B6A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {75DDEA81-59C8-42BF-A591-0E3511A2DEA0}
+	EndGlobalSection
+EndGlobal
