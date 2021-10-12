@@ -37,7 +37,9 @@ class DataFinder:
                 async with session.get(link, timeout=self._timeout) as response:
                     res = await response.read()
                     if res != None:
-                        print(r'#', flush=True)
+                        print(rf'Loaded[{link}]', flush=True)
+                    else:
+                        print(rf'Broken[{link}]', flush=True)
                     return res
         except:
             return None
@@ -83,7 +85,7 @@ class DataFinder:
         get_results = await asyncio.gather(*tasks)
         errors_links = [link for i, link in enumerate(links) if get_results[i] == None]
 
-        print(f'!Completed[{links_length - len(errors_links)}]:{errors_links}')
+        print(f'!Completed[{links_length - len(errors_links)}]')
 
 
         if self._with_rbk:
