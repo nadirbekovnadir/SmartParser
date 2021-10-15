@@ -4,10 +4,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.0.31710.8
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProcessesHub", "ProcessesHub\ProcessesHub.csproj", "{1E18C852-5F84-4140-9C4D-701127057AEC}"
+	ProjectSection(ProjectDependencies) = postProject
+		{116CD2A3-2E46-4B56-9863-7004DEF8E6D1} = {116CD2A3-2E46-4B56-9863-7004DEF8E6D1}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ParserApp", "ParserApp\ParserApp.csproj", "{D95E3306-9F5C-487F-B914-E5A3D96C9702}"
 EndProject
 Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "ParserLib", "ParserLib\ParserLib.pyproj", "{1ED8D253-3DB0-4D72-92F4-A69ADA73B6A7}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Models", "ModelsLibrary\Models.csproj", "{116CD2A3-2E46-4B56-9863-7004DEF8E6D1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,6 +30,10 @@ Global
 		{D95E3306-9F5C-487F-B914-E5A3D96C9702}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1ED8D253-3DB0-4D72-92F4-A69ADA73B6A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1ED8D253-3DB0-4D72-92F4-A69ADA73B6A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{116CD2A3-2E46-4B56-9863-7004DEF8E6D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{116CD2A3-2E46-4B56-9863-7004DEF8E6D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{116CD2A3-2E46-4B56-9863-7004DEF8E6D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{116CD2A3-2E46-4B56-9863-7004DEF8E6D1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

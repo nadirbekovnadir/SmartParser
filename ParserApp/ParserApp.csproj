@@ -7,12 +7,4 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Compile Include="..\ProcessesHub\FinderProcess.cs" Link="Processes\FinderProcess.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Processes\" />
-  </ItemGroup>
-
 </Project>

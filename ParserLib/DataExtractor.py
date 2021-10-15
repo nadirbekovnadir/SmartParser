@@ -12,7 +12,7 @@ from colorama import Fore, Style
 from RBC_Parser import rbc_parser
 
 
-class DataFinder:
+class DataExtractor:
 
     def __init__(self,
         with_rbk=False,
@@ -42,6 +42,7 @@ class DataFinder:
                         print(rf'Broken[{name}][{link}]', flush=True)
                     return res
         except:
+            print(rf'Broken[{name}][{link}]', flush=True)
             return None
 
 
@@ -125,9 +126,14 @@ class DataFinder:
             except:
                 print(f'Broken[RBC][0]', flush=True)
 
+        
+        len_df = 0
+        df = None
+        if len(dfs) != 0:
+            df = pd.concat(dfs, ignore_index=True)
+            len_df = len(df)
 
-        df = pd.concat(dfs, ignore_index=True)
-        print(f'!Completed[{n_sites}][{len(df)}]', flush=True)
+        print(f'!Completed[{n_sites}][{len_df}]', flush=True)
 
         return df
 

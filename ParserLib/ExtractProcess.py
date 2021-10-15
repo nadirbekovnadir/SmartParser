@@ -11,7 +11,9 @@ import json
 
 import warnings
 
-from DataFinder import DataFinder
+from pandas.core.base import NoNewAttributesMixin
+
+from DataExtractor import DataExtractor
 
 
 def main():
@@ -20,7 +22,7 @@ def main():
     output_path = r'C:\Users\Nadir\Documents\Parser_data'
     timeout = 15
 
-    with_rbk = True
+    with_rbk = False
 
     # Parse args 
     # TODO: create common func
@@ -45,9 +47,13 @@ def main():
         text = file.read().replace('\n', '')
     news_urls = json.loads(text)
 
-    data_finder = DataFinder(with_rbk, timeout)
+    data_finder = DataExtractor(with_rbk, timeout)
 
     df = data_finder.parse(news_urls)
+
+    if type(df) == type(None):
+        return
+
     df = df.sort_values('Date', ascending=False)
 
     current_timestamp = datetime.datetime.now()

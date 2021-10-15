@@ -8,8 +8,8 @@
     <RunPostBuildEvent>Always</RunPostBuildEvent>
   </PropertyGroup>
 
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="xcopy $(SolutionDir)ParserLib $(OutDir) /s /d /y" />
-  </Target>
+  <ItemGroup>
+    <ProjectReference Include="..\ModelsLibrary\Models.csproj" />
+  </ItemGroup>
 
 </Project>

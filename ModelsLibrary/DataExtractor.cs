@@ -2,47 +2,19 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace TestProcess
+namespace ProcessesLibrary
 {
-    public class NewsSource
+
+    public class DataExtractor
     {
-        private string name = string.Empty;
-        private string url = string.Empty;
-        private int entitesCount = 0;
-        private List<string> missedColumns = new();
-        private bool isLoaded = false;
-        private bool isParsed = false;
-
-        public string Name { get => name; set => name = value; }
-        public string Url { get => url; set => url = value; }
-        public int EntitesCount { get => entitesCount; set => entitesCount = value; }
-        public List<string> MissedColumns { get => missedColumns; set => missedColumns = value; }
-        public bool IsLoaded { get => isLoaded; set => isLoaded = value; }
-        public bool IsParsed { get => isParsed; set => isParsed = value; }
-
-        public NewsSource() { }
-
-        public NewsSource(NewsSource ns)
-        {
-            Name = ns.Name;
-            Url = ns.Url;
-            EntitesCount = ns.entitesCount;
-            MissedColumns = ns.MissedColumns.Select(col => new string(col)).ToList();
-            IsLoaded = ns.isLoaded;
-            IsParsed = ns.isParsed;
-            
-        }
-    }
-
-
-    public class FinderProcess
-    {
+        public string ApplicationName { get; private set; }
         public string PythonPath { get; private set; }
-        public string ScriptPath {  get; private set; }
+        public string ScriptPath { get; private set; }
 
         public ProcessStartInfo ProcessInfo { get; private set; }
 
@@ -59,10 +31,11 @@ namespace TestProcess
 
         public ProcessState State { get; private set; }
 
-        public FinderProcess(string pythonPath, string scriptPath)
+        public DataExtractor()
         {
-            PythonPath = pythonPath;
-            ScriptPath = scriptPath;
+            ApplicationName = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? "";
+            PythonPath = Path.Combine(ApplicationName, "parser_env\\Scripts\\python.exe");
+            ScriptPath = Path.Combine(ApplicationName, "Scripts\\ExtractProcess.py");
 
             ProcessInfo = new ProcessStartInfo
             {
@@ -84,19 +57,19 @@ namespace TestProcess
         public class LoadedEventArgs : EventArgs
         {
             public bool Success { get; set; }
-            public NewsSource? Value { get; set; }
+            public NewsSources? Value { get; set; }
         }
 
         public class ParsingEventArgs : EventArgs
         {
             public int SourcesCount { get; set; }
-            public int EntitiesCount {  get; set; }
+            public int EntitiesCount { get; set; }
         }
 
         public class ParsedEventArgs : EventArgs
         {
             public bool Success { get; set; }
-            public NewsSource? Value { get; set; }
+            public NewsSources? Value { get; set; }
         }
 
         public class CompletedEventArgs : EventArgs
@@ -117,7 +90,7 @@ namespace TestProcess
         public event EventHandler<CompletedEventArgs>? ProcessCompleted;
 
         public Task<int> StartAsync(
-            string inputPath,string outputPath, int timeout = 15, bool with_rbk = false)
+            string inputPath, string outputPath, int timeout = 15, bool with_rbk = false)
         {
             var tcs = new TaskCompletionSource<int>();
 
@@ -158,8 +131,15 @@ namespace TestProcess
             return tcs.Task;
         }
 
+        public int Start(
+            string inputPath, string outputPath, int timeout = 15, bool with_rbk = false)
+        {
+            throw new NotImplementedException();
+            //return 0;
+        }
+
         //
-        private readonly Dictionary<string, NewsSource> newsSources = new();
+        private readonly Dictionary<string, NewsSources> newsSources = new();
 
         //Loading
         private int n_loadingLinks = 0;
@@ -233,17 +213,18 @@ namespace TestProcess
             var name = match.Groups["name"].Value;
             var link = match.Groups["url"].Value;
 
-            var ns = new NewsSource{
-                Name = name, 
+            var ns = new NewsSources
+            {
+                Name = name,
                 Url = link
             };
 
             if (match.Groups["Loaded"].Success)
                 ns.IsLoaded = true;
 
-            newsSources.Add(ns.Name, new NewsSource(ns));
+            newsSources.Add(ns.Name, new NewsSources(ns));
 
-            SourceLoaded?.Invoke(this, new LoadedEventArgs { Success = ns.IsLoaded, Value = new NewsSource(ns) });
+            SourceLoaded?.Invoke(this, new LoadedEventArgs { Success = ns.IsLoaded, Value = new NewsSources(ns) });
             return ProcessState.Loading;
         }
 
@@ -298,7 +279,7 @@ namespace TestProcess
                     ns.MissedColumns.Add(s.Trim('\''));
             }
 
-            SourceParsed?.Invoke(this, new ParsedEventArgs { Success = ns.IsParsed, Value = new NewsSource(ns) });
+            SourceParsed?.Invoke(this, new ParsedEventArgs { Success = ns.IsParsed, Value = new NewsSources(ns) });
             return ProcessState.Parsing;
         }
     }

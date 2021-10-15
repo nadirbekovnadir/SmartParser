@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>1ed8d253-3db0-4d72-92f4-a69ada73b6a7</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>FinderProcess.py</StartupFile>
+    <StartupFile>ExtractProcess.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -23,9 +23,15 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="DataFinder.py" />
-    <Compile Include="FinderProcess.py" />
-    <Compile Include="RBC_Parser.py" />
+    <Content Include="DataExtractor.py">
+      <Publish>True</Publish>
+    </Content>
+    <Content Include="ExtractProcess.py">
+      <Publish>True</Publish>
+    </Content>
+    <Content Include="RBC_Parser.py">
+      <Publish>True</Publish>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Interpreter Include="parser_env\">
