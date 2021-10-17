@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.ComponentModel;
 using ParserApp.Interfaces;
 using ParserApp.Commands;
+using ParserApp.BindingParams;
 
 namespace ParserApp.VM
 {
@@ -22,33 +23,42 @@ namespace ParserApp.VM
 
         #endregion
 
-        #region Binded properties
 
-        private string _sitesFilePath;
-        public string SitesFilePath
+        #region Binded params
+
+        private PathesParams _pathes;
+        public PathesParams Pathes
         {
-            get { return _sitesFilePath; }
+            get
+            {
+                _pathes ??= new PathesParams();
+                return _pathes;
+            }
             set
             {
-                _sitesFilePath = value;
-                OnPropertyChanged(nameof(SitesFilePath));
+                _pathes = value;
+                OnPropertyChanged(nameof(Pathes));
             }
         }
 
 
-        private string _wordsFilePath;
-
-        public string WordsFilePath
+        private ParseParams _parse;
+        public ParseParams Parse
         {
-            get { return _wordsFilePath; }
+            get
+            {
+                _parse ??= new ParseParams();
+                return _parse;
+            }
             set
             {
-                _wordsFilePath = value;
-                OnPropertyChanged(nameof(WordsFilePath));
+                _parse = value;
+                OnPropertyChanged(nameof(Parse));
             }
         }
 
         #endregion
+
 
         #region Services
 
@@ -56,21 +66,6 @@ namespace ParserApp.VM
 
         #endregion
 
-        #region Commands
-
-        private RelayCommand<object> _openSitesFile;
-        public RelayCommand<object> OpenSitesFile
-        {
-            get => _openSitesFile ?? new RelayCommand<object>(OpenSitesFileExecute);
-        }
-
-        private RelayCommand<object> _openWordsFile;
-        public RelayCommand<object> OpenWordsFile
-        {
-            get => _openWordsFile ?? new RelayCommand<object>(OpenWordsFileExecute);
-        }
-
-        #endregion
 
         public MainWindowVM(IDialogService dialogService)
         {
@@ -78,14 +73,40 @@ namespace ParserApp.VM
         }
 
 
+        #region Commands
+
         #region OpenSitesFile
+
+        private RelayCommand<object>  _openSitesFile;
+        public RelayCommand<object> OpenSitesFile 
+        { 
+            get
+            {
+                _openSitesFile ??= new RelayCommand<object>(OpenSitesFileExecute);
+                return _openSitesFile;
+            }
+        }
 
         public void OpenSitesFileExecute(object parameter)
         {
             if (!_dialogService.OpenFileDialog())
                 return;
 
-            SitesFilePath = _dialogService.FilePath;
+            Pathes.SitesFile = _dialogService.FilePath;
+        }
+
+        #endregion
+
+        #region OpenWordsFile
+
+        private RelayCommand<object> _openWordsFile;
+        public RelayCommand<object> OpenWordsFile
+        {
+            get
+            {
+                _openWordsFile ??= new RelayCommand<object>(OpenWordsFileExecute);
+                return _openWordsFile;
+            }
         }
 
         public void OpenWordsFileExecute(object parameter)
@@ -93,8 +114,50 @@ namespace ParserApp.VM
             if (!_dialogService.OpenFileDialog())
                 return;
 
-            WordsFilePath = _dialogService.FilePath;
+            Pathes.WordsFile = _dialogService.FilePath;
         }
+
+        #endregion
+
+        #region OpenOutputDirectory
+
+        private RelayCommand<object> _openOutputDirectory;
+        public RelayCommand<object> OpenOutputDirectory
+        {
+            get
+            {
+                _openOutputDirectory ??= new RelayCommand<object>(OpenOutputDirectoryExecute);
+                return _openOutputDirectory;
+            }
+        }
+        private void OpenOutputDirectoryExecute(object obj)
+        {
+            if (!_dialogService.OpenFolderDialog())
+                return;
+
+            Pathes.Output = _dialogService.FolderPath;
+        }
+
+        #endregion
+
+        #region StartParse
+
+        private RelayCommand<object> _startParse;
+        public RelayCommand<object> StartParse
+        {
+            get
+            {
+                _startParse ??= new RelayCommand<object>(StartParseExecute);
+                return _startParse;
+            }
+        }
+        private void StartParseExecute(object obj)
+        {
+            // Temp
+            _dialogService.ShowMessage(Parse.Timeout.ToString());
+        }
+
+        #endregion
 
         #endregion
     }

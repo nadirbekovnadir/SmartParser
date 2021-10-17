@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ParserApp"
         mc:Ignorable="d"
-        Title="MainWindow" Height="932" Width="1382">
+        Title="MainWindow" Height="970" Width="1684">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="11*"/>
@@ -24,11 +24,15 @@
                     </Grid.RowDefinitions>
 
                     <Label Content="Parse" HorizontalContentAlignment="Center" FontSize="16" Margin="10,9,10,0" VerticalAlignment="Top"/>
-                    <CheckBox Content="with RBC" Margin="10,45,10,0" VerticalAlignment="Top" Height="15"/>
+                    <CheckBox Content="with RBC" Margin="10,45,10,0" VerticalAlignment="Top" Height="15" 
+                              IsChecked="{Binding Parse.WithRBC, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                     <Label Content="Timeout" Margin="10,69,10,0" VerticalAlignment="Top" Height="25"/>
-                    <TextBox Margin="10,94,10,0" TextWrapping="Wrap" Text="15" VerticalAlignment="Top"/>
-                    <CheckBox Content="To excel" Margin="10,0,10,65" Height="15" VerticalAlignment="Bottom"/>
-                    <Button Content="Start" Margin="10,0,10,40" Height="20" VerticalAlignment="Bottom"/>
+                    <TextBox Margin="10,94,10,0" TextWrapping="Wrap" VerticalAlignment="Top" 
+                             Text="{Binding Parse.Timeout, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <CheckBox Content="To excel" Margin="10,0,10,65" Height="15" VerticalAlignment="Bottom"
+                              IsChecked="{Binding Parse.ToExcel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <Button Content="Start" Margin="10,0,10,40" Height="20" VerticalAlignment="Bottom"
+                            Command="{Binding StartParse}"/>
                     <Button Content="Stop" Margin="10,0,10,15" Height="20" VerticalAlignment="Bottom"/>
 
                     <Separator Margin="0,0,0,4" Height="6" VerticalAlignment="Bottom" />
@@ -65,18 +69,25 @@
             <Border DockPanel.Dock="Top" BorderThickness="0, 0, 0, 4" BorderBrush="DarkGray">
                 <WrapPanel Orientation="Horizontal" Height="Auto">
                     <StackPanel Orientation="Horizontal">
-                        <Button Content="Sites file" HorizontalAlignment="Left" Margin="10,10,0,10" VerticalAlignment="Center" Width="100" Command="{Binding OpenSitesFile}"/>
-                        <TextBox HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0,0,0" TextWrapping="Wrap" Text="{Binding SitesFilePath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="300"/>
+                        <Button Content="Sites file" HorizontalAlignment="Left" Margin="10,10,0,10" VerticalAlignment="Center" Width="100" 
+                                Command="{Binding OpenSitesFile}"/>
+                        <TextBox HorizontalAlignment="Left" VerticalAlignment="Center" 
+                                 Margin="10,0,0,0" TextWrapping="Wrap" Width="400"
+                                 Text="{Binding Pathes.SitesFile, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                     </StackPanel>
 
                     <StackPanel Orientation="Horizontal">
                         <Button Content="Words file" HorizontalAlignment="Left" Margin="10,10,0,10" VerticalAlignment="Center" Width="100" Command="{Binding OpenWordsFile}"/>
-                        <TextBox HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0,0,0" TextWrapping="Wrap" Text="{Binding WordsFilePath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="300"/>
+                        <TextBox HorizontalAlignment="Left" VerticalAlignment="Center" 
+                                 Margin="10,0,0,0" Width="400"
+                                 TextWrapping="Wrap" Text="{Binding Pathes.WordsFile, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                     </StackPanel>
 
                     <StackPanel Orientation="Horizontal">
-                        <Button Content="Output" HorizontalAlignment="Left" Margin="10,10,0,10" VerticalAlignment="Center" Width="100" Command="{Binding OpenWordsFile}"/>
-                        <TextBox HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0,0,0" TextWrapping="Wrap" Text="{Binding WordsFilePath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="300"/>
+                        <Button Content="Output" HorizontalAlignment="Left" Margin="10,10,0,10" VerticalAlignment="Center" Width="100" Command="{Binding OpenOutputDirectory}"/>
+                        <TextBox HorizontalAlignment="Left" VerticalAlignment="Center" 
+                                 Margin="10,0,0,0" Width="400"
+                                 TextWrapping="Wrap" Text="{Binding Pathes.Output, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                     </StackPanel>
                 </WrapPanel>
             </Border>
