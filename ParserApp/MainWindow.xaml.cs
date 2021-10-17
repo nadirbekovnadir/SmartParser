@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ParserApp.VM;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,6 +14,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+using ParserApp.Services;
+
 namespace ParserApp
 {
     /// <summary>
@@ -23,6 +26,7 @@ namespace ParserApp
         public MainWindow()
         {
             InitializeComponent();
+            DataContext = new MainWindowVM(new DefaultDialogService());
         }
     }
 }

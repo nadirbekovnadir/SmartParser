@@ -49,7 +49,7 @@ namespace Models.Entities
         {
             using var writer = new StreamWriter(path);
             using var csv = new CsvWriter(writer, _csvConf);
-            csv.WriteRecords<NewsEntity>(entities);
+            csv.WriteRecords(entities);
         }
 
         public bool Equals(NewsEntity? other) =>
