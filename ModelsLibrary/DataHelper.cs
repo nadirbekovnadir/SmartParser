@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using CsvHelper.Configuration;
 using Models.Entities;
 
-namespace ProcessesLibrary
+namespace Models
 {
     public static class DataHelper
     {

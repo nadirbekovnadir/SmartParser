@@ -26,7 +26,7 @@ namespace ParserApp
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = new MainWindowVM(new DefaultDialogService());
+            DataContext = new MainViewModel();
         }
     }
 }

@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Models.Entities;
 using System.Diagnostics;
-using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
-namespace ProcessesLibrary
+namespace Models
 {
 
     public class DataExtractor
@@ -49,6 +45,8 @@ namespace ProcessesLibrary
             };
         }
 
+        #region EventArgs
+
         public class LoadingEventArgs : EventArgs
         {
             public int SourcesCount { get; set; }
@@ -77,6 +75,11 @@ namespace ProcessesLibrary
             public int ExitCode { get; set; }
         }
 
+        #endregion
+
+
+        #region Events
+
         public event EventHandler? ProcessStarted;
 
         public event EventHandler<LoadingEventArgs>? LoadingStarted;
@@ -88,6 +91,11 @@ namespace ProcessesLibrary
         public event EventHandler<ParsingEventArgs>? ParsingCompleted;
 
         public event EventHandler<CompletedEventArgs>? ProcessCompleted;
+
+        #endregion
+
+
+        #region Start
 
         public Task<int> StartAsync(
             string inputPath, string outputPath, int timeout = 15, bool with_rbk = false)
@@ -138,6 +146,9 @@ namespace ProcessesLibrary
             //return 0;
         }
 
+        #endregion
+
+
         //
         private readonly Dictionary<string, NewsSources> newsSources = new();
 
@@ -176,6 +187,9 @@ namespace ProcessesLibrary
 
             return;
         }
+
+
+        #region StateSwitching
 
         private readonly Regex startRegex = new(
             @"^!Loading\[(?<n>\d+)\]",
@@ -282,5 +296,7 @@ namespace ProcessesLibrary
             SourceParsed?.Invoke(this, new ParsedEventArgs { Success = ns.IsParsed, Value = new NewsSources(ns) });
             return ProcessState.Parsing;
         }
+
+        #endregion
     }
 }

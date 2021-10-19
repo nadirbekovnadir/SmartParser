@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31710.8
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProcessesHub", "ProcessesHub\ProcessesHub.csproj", "{1E18C852-5F84-4140-9C4D-701127057AEC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProcessesTest", "ProcessesHub\ProcessesTest.csproj", "{1E18C852-5F84-4140-9C4D-701127057AEC}"
 	ProjectSection(ProjectDependencies) = postProject
 		{116CD2A3-2E46-4B56-9863-7004DEF8E6D1} = {116CD2A3-2E46-4B56-9863-7004DEF8E6D1}
 	EndProjectSection

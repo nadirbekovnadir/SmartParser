@@ -15,7 +15,7 @@
         <DockPanel LastChildFill="True" Grid.ColumnSpan="2">
 
             <Border DockPanel.Dock="Right" BorderThickness="4, 0, 0, 0" BorderBrush="DarkGray">
-                <Grid Width="100">
+                <Grid Width="100" DataContext="{Binding ProcessesViewModel}">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"></RowDefinition>
                         <RowDefinition Height="*"></RowDefinition>
@@ -67,7 +67,7 @@
             </Border>
 
             <Border DockPanel.Dock="Top" BorderThickness="0, 0, 0, 4" BorderBrush="DarkGray">
-                <WrapPanel Orientation="Horizontal" Height="Auto">
+                <WrapPanel Orientation="Horizontal" Height="Auto" DataContext="{Binding ProcessesViewModel}">
                     <StackPanel Orientation="Horizontal">
                         <Button Content="Sites file" HorizontalAlignment="Left" Margin="10,10,0,10" VerticalAlignment="Center" Width="100" 
                                 Command="{Binding OpenSitesFile}"/>
@@ -124,9 +124,21 @@
                               ResizeDirection="Rows" ResizeBehavior="PreviousAndNext"/>
 
                 <Border BorderThickness="0, 4, 0, 0" BorderBrush="DarkGray" Grid.Row="2" Grid.ColumnSpan="3">
-                    <ScrollViewer>
-                        <TextBlock/>
-                    </ScrollViewer>
+                    <DockPanel DataContext="{Binding LogViewModel}" LastChildFill="True">
+                        <Border DockPanel.Dock="Bottom" BorderThickness="0, 1, 0, 0" BorderBrush="Gray">
+                            <DockPanel  LastChildFill="True">
+                                <ProgressBar Minimum="0" 
+                                             Maximum="{Binding MaxObjects, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                                             Value="{Binding CurrentObjects, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                                             Height="30" Width="400"/>
+                                <Label 
+                                    Content="{Binding ProcessInfo, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+                            </DockPanel>
+                        </Border>
+                        <ScrollViewer>
+                            <ListBox ItemsSource="{Binding LogStrings, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        </ScrollViewer>
+                    </DockPanel>
                 </Border>
 
             </Grid>
