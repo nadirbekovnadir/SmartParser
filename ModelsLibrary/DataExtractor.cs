@@ -11,6 +11,7 @@ namespace Models
         public string ApplicationName { get; private set; }
         public string PythonPath { get; private set; }
         public string ScriptPath { get; private set; }
+        public List<NewsEntity> NewsEntities { get; set; }
 
         public ProcessStartInfo ProcessInfo { get; private set; }
 
@@ -70,11 +71,6 @@ namespace Models
             public NewsSources? Value { get; set; }
         }
 
-        public class CompletedEventArgs : EventArgs
-        {
-            public int ExitCode { get; set; }
-        }
-
         #endregion
 
 
@@ -121,10 +117,13 @@ namespace Models
             process.Exited += (s, e) =>
             {
                 tcs.SetResult(process.ExitCode);
-                process.Dispose();
 
                 State = ProcessState.Completed;
+
+                NewsEntities = NewsEntity.LoadFromCsv(outputPath);
+
                 ProcessCompleted?.Invoke(this, new CompletedEventArgs { ExitCode = process.ExitCode });
+                process.Dispose();
             };
 
             process.OutputDataReceived += Process_OutputDataReceived;

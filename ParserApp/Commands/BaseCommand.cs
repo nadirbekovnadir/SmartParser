@@ -1,14 +1,16 @@
 ﻿using System;
+using System.Windows;
 using System.Windows.Input;
 
 namespace ParserApp.Commands
 {
-    public abstract class BaseCommand : ICommand
+    public abstract class BaseCommand : IBaseCommand
     {
-        public virtual event EventHandler? CanExecuteChanged
+        public virtual event EventHandler? CanExecuteChanged;
+
+        public virtual void RaiseCanExecuteChanged()
         {
-            add { CommandManager.RequerySuggested += value; }
-            remove { CommandManager.RequerySuggested -= value; }
+            throw new NotImplementedException();
         }
 
         public virtual bool CanExecute(object? parameter)

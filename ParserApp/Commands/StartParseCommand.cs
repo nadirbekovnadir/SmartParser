@@ -3,30 +3,38 @@ using ParserApp.BindingParams;
 using ParserApp.VM;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace ParserApp.Commands
 {
-    public class StartParseCommand : BaseCommand
+    public class StartParseCommand : AsyncBaseCommand
     {
-        private readonly ParseParams _parseParams;
-        private readonly PathesParams _pathesParams;
+        private readonly ProcessesViewModel _viewModel;
         private readonly DataExtractor _dataExtractor;
 
-        public StartParseCommand(ParseParams parseParams, PathesParams pathesParams, DataExtractor dataExtractor)
+        public StartParseCommand(
+            ProcessesViewModel viewModel, 
+            DataExtractor dataExtractor,
+            Action<Exception> onException)
+            : base(onException)
         {
-            _parseParams = parseParams;
-            _pathesParams = pathesParams;
+            _viewModel = viewModel;
             _dataExtractor = dataExtractor;
         }
 
-        public override void Execute(object? parameter)
+        protected override async Task ExecuteAsync(object? parameter)
         {
-            _dataExtractor.StartAsync(
-                _pathesParams.SitesFile, _pathesParams.Output,
-                _parseParams.Timeout, _parseParams.WithRBC);
+            var outputPath = Path.Combine(_viewModel.Pathes.Output, _viewModel.ParseFolder);
+
+            if (!Directory.Exists(outputPath))
+                Directory.CreateDirectory(outputPath);
+
+            await _dataExtractor.StartAsync(
+                _viewModel.Pathes.SitesFile, outputPath,
+                _viewModel.Parse.Timeout, _viewModel.Parse.WithRBC);
         }
     }
 }

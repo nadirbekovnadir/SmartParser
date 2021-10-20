@@ -75,7 +75,7 @@ namespace ParserApp.VM
             CurrentObjects = 0;
             MaxObjects = sourcesCount;
 
-            _dispatcher.Invoke(() =>
+            _dispatcher.BeginInvoke(() =>
                 LogStrings.Add("Loading started")
             );
         }
@@ -87,7 +87,7 @@ namespace ParserApp.VM
             var logString = success ? "Loaded: " : "Error: ";
             logString += value.Name.ToString();
 
-            _dispatcher.Invoke(()=>
+            _dispatcher.BeginInvoke(()=>
                 LogStrings.Add(logString)
             );
         }
@@ -97,7 +97,7 @@ namespace ParserApp.VM
             ProcessInfo = "Completed";
             CurrentObjects = sourcesCount;
 
-            _dispatcher.Invoke(() =>
+            _dispatcher.BeginInvoke(() =>
                 LogStrings.Add("Loading completed")
             );
         }
@@ -108,7 +108,7 @@ namespace ParserApp.VM
             CurrentObjects = 0;
             MaxObjects = sourcesCount;
 
-            _dispatcher.Invoke(() =>
+            _dispatcher.BeginInvoke(() =>
                 LogStrings.Add("Parsing started")
             );
         }
@@ -120,7 +120,7 @@ namespace ParserApp.VM
             var logString = success ? "Parsed: " : "Error: ";
             logString += value.Name.ToString();
 
-            _dispatcher.Invoke(() =>
+            _dispatcher.BeginInvoke(() =>
                 LogStrings.Add(logString)
             );
         }

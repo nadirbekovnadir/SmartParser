@@ -2,7 +2,7 @@
 
 using System.Diagnostics;
 using Models.Entities;
-using ProcessesLibrary;
+using Models;
 
 var appLocation = AppDomain.CurrentDomain.BaseDirectory ?? "";
 string pythonPath = Path.Combine(appLocation, "parser_env/Scripts/python.exe");

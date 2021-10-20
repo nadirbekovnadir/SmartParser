@@ -40,5 +40,6 @@ namespace ParserApp.BindingParams
                 OnPropertyChanged(nameof(Output));
             }
         }
+
     }
 }

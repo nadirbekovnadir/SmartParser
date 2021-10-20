@@ -13,7 +13,7 @@ namespace Models
     public static class DataHelper
     {
 
-        public static List<NewsEntity> Match(List<NewsEntity> entities, params string[] patterns)
+        public static List<NewsEntity> Match(List<NewsEntity> entities, IEnumerable<string> patterns)
         {
 
             var regexes = (from p in patterns select new Regex(p, RegexOptions.Compiled | RegexOptions.IgnoreCase)).ToList();
