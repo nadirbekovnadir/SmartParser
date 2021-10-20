@@ -34,6 +34,8 @@ namespace Models
                 var entities = NewsEntity.LoadFromCsv(filePath);
 
                 NewsEntities = DataHelper.Match(entities, patterns);
+
+                //string fileName = "";
                 NewsEntity.SaveToCsv(NewsEntities, outputPath);
             }
             catch (Exception ex)

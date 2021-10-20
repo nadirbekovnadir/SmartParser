@@ -11,7 +11,7 @@ namespace Models
         public string ApplicationName { get; private set; }
         public string PythonPath { get; private set; }
         public string ScriptPath { get; private set; }
-        public List<NewsEntity> NewsEntities { get; set; }
+        public NewsBlock NewsBlock { get; set; }
 
         public ProcessStartInfo ProcessInfo { get; private set; }
 
@@ -94,12 +94,18 @@ namespace Models
         #region Start
 
         public Task<int> StartAsync(
-            string inputPath, string outputPath, int timeout = 15, bool with_rbk = false)
+            string inputPath, int timeout = 15, bool with_rbk = false)
         {
             var tcs = new TaskCompletionSource<int>();
 
             var timeoutArg = timeout.ToString();
             var withRbkArg = with_rbk ? "true" : "false";
+
+            string outputPath = Path.Combine(
+                Directory.GetCurrentDirectory(), "temp");
+
+            if (!Directory.Exists(outputPath))
+                Directory.CreateDirectory(outputPath);
 
             ProcessInfo.Arguments =
                 $"\"{ScriptPath}\" " +
@@ -116,14 +122,15 @@ namespace Models
 
             process.Exited += (s, e) =>
             {
-                tcs.SetResult(process.ExitCode);
-
                 State = ProcessState.Completed;
 
-                NewsEntities = NewsEntity.LoadFromCsv(outputPath);
+                var pathFile = Directory.GetFiles(outputPath, "*.csv")[0];
+                NewsBlock = NewsEntity.LoadFromCsv(pathFile);
+                File.Delete(pathFile);
 
-                ProcessCompleted?.Invoke(this, new CompletedEventArgs { ExitCode = process.ExitCode });
+                tcs.SetResult(process.ExitCode);
                 process.Dispose();
+                ProcessCompleted?.Invoke(this, new CompletedEventArgs { ExitCode = process.ExitCode });
             };
 
             process.OutputDataReceived += Process_OutputDataReceived;

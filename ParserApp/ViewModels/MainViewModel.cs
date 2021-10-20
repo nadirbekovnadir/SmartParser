@@ -1,4 +1,5 @@
 ﻿using Models;
+using Models.Repositories;
 using ParserApp.BindingParams;
 using ParserApp.Commands;
 using ParserApp.Interfaces;
@@ -22,7 +23,10 @@ namespace ParserApp.VM
 
             ProcessesViewModel = new ProcessesViewModel(
                 processStateStore,
-                new DefaultDialogService());
+                new DefaultDialogService(),
+                new NewsRepository(new ExtractedContext()),
+                new NewsRepository(new ExceptedContext()),
+                new NewsRepository(new FindedContext()));
 
             LogViewModel = new LogViewModel(
                 processStateStore);

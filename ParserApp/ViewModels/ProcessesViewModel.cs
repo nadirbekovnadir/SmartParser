@@ -8,6 +8,7 @@ using ParserApp.Stores;
 using System;
 using System.IO;
 using Models.Entities;
+using Models.Repositories;
 
 namespace ParserApp.VM
 {
@@ -16,6 +17,7 @@ namespace ParserApp.VM
         public string ParseFolder { get; } = "Parse";
         public string ExceptFolder { get; } = "Except";
         public string FindFolder { get; } = "Find";
+
 
         #region Binded params
 
@@ -77,6 +79,15 @@ namespace ParserApp.VM
         #endregion
 
 
+        #region Repositories
+
+        private readonly IRepository<NewsBlock> _extractedRepository;
+        private readonly IRepository<NewsBlock> _exceptedRepository;
+        private readonly IRepository<NewsBlock> _findedRepository;
+
+        #endregion
+
+
         #region Stores
 
         private readonly ProcessStateStore _processStateStore;
@@ -86,11 +97,17 @@ namespace ParserApp.VM
 
         public ProcessesViewModel(
             ProcessStateStore processStateStore,
-            IDialogService dialogService)
+            IDialogService dialogService,
+            IRepository<NewsBlock> extractedRepository,
+            IRepository<NewsBlock> exceptedRepository,
+            IRepository<NewsBlock> findedRepository)
         {
             _processStateStore = processStateStore;
             _dialogService = dialogService;
 
+            _extractedRepository = extractedRepository;
+            _exceptedRepository = exceptedRepository;
+            _findedRepository = findedRepository;
 
             _dataExtractor = new DataExtractor();
 
@@ -102,7 +119,7 @@ namespace ParserApp.VM
             _dataExtractor.SourceParsed += OnSourceParsed;
             _dataExtractor.ParsingCompleted += OnParsingCompleted;
 
-            _dataExtractor.ProcessCompleted += OnProcessCompleted;
+            _dataExtractor.ProcessCompleted += OnExtractingCompleted;
 
 
             _dataFinder = new DataFinder();
@@ -143,7 +160,7 @@ namespace ParserApp.VM
             _processStateStore.OnParsingCompleted(e.SourcesCount, e.EntitiesCount);
         }
 
-        private void OnProcessCompleted(object? sender, CompletedEventArgs e)
+        private void OnExtractingCompleted(object? sender, CompletedEventArgs e)
         {
             
         }
@@ -195,8 +212,10 @@ namespace ParserApp.VM
             get
             {
                 _startParse ??= new StartParseCommand(
-                    this,
+                    Pathes,
+                    Parse,
                     _dataExtractor,
+                    _findedRepository,
                     (ex) => { });
                 return _startParse;
             }

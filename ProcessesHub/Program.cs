@@ -42,18 +42,18 @@ extractor.SourceParsed += (s, e) => {
 };
 extractor.ParsingCompleted += (s, e) => { Console.WriteLine($"Loading completed [{e.SourcesCount}][{e.EntitiesCount}]\n"); };
 
-int res = await extractor.StartAsync(sites_file, output_path, timeout, with_rbk);
-Console.WriteLine(res);
+//int res = await extractor.StartAsync(sites_file, output_path, timeout, with_rbk);
+//Console.WriteLine(res);
 
-Console.WriteLine("Loading Entities");
+//Console.WriteLine("Loading Entities");
 
-var entities = NewsEntity.LoadFromCsv("C:\\Users\\Nadir\\Documents\\Parser_data\\Extracted\\2021-10-15_18-43-54.csv");
-var olderEntities = NewsEntity.LoadFromCsv("C:\\Users\\Nadir\\Documents\\Parser_data\\Extracted\\2021-10-15_18-38-19.csv");
+//var entities = NewsEntity.LoadFromCsv("C:\\Users\\Nadir\\Documents\\Parser_data\\Extracted\\2021-10-15_18-43-54.csv");
+//var olderEntities = NewsEntity.LoadFromCsv("C:\\Users\\Nadir\\Documents\\Parser_data\\Extracted\\2021-10-15_18-38-19.csv");
 
-var match = DataHelper.Match(entities, @"ДолЛАР|РубЛ|ЕвРО");
-NewsEntity.SaveToCsv(match, "C:\\Users\\Nadir\\Documents\\Parser_data\\Extracted\\Match.csv");
+//var match = DataHelper.Match(entities, @"ДолЛАР|РубЛ|ЕвРО");
+//NewsEntity.SaveToCsv(match, "C:\\Users\\Nadir\\Documents\\Parser_data\\Extracted\\Match.csv");
 
-var except = DataHelper.Except(entities, olderEntities);
-NewsEntity.SaveToCsv(except, "C:\\Users\\Nadir\\Documents\\Parser_data\\Extracted\\Except.csv");
+//var except = DataHelper.Except(entities, olderEntities);
+//NewsEntity.SaveToCsv(except, "C:\\Users\\Nadir\\Documents\\Parser_data\\Extracted\\Except.csv");
 
-Console.WriteLine("Completed");
+//Console.WriteLine("Completed");

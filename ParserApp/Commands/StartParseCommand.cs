@@ -1,40 +1,42 @@
 ﻿using Models;
+using Models.Entities;
+using Models.Repositories;
 using ParserApp.BindingParams;
-using ParserApp.VM;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ParserApp.Commands
 {
     public class StartParseCommand : AsyncBaseCommand
     {
-        private readonly ProcessesViewModel _viewModel;
+        private readonly PathesParams _pathes;
+        private readonly ParseParams _parse;
+
         private readonly DataExtractor _dataExtractor;
+        private readonly IRepository<NewsBlock> _repo;
 
         public StartParseCommand(
-            ProcessesViewModel viewModel, 
+            PathesParams pathes,
+            ParseParams parse,
             DataExtractor dataExtractor,
+            IRepository<NewsBlock> repo,
             Action<Exception> onException)
             : base(onException)
         {
-            _viewModel = viewModel;
+            _pathes = pathes;
+            _parse = parse;
+
             _dataExtractor = dataExtractor;
+            _repo = repo;
         }
 
         protected override async Task ExecuteAsync(object? parameter)
         {
-            var outputPath = Path.Combine(_viewModel.Pathes.Output, _viewModel.ParseFolder);
-
-            if (!Directory.Exists(outputPath))
-                Directory.CreateDirectory(outputPath);
-
             await _dataExtractor.StartAsync(
-                _viewModel.Pathes.SitesFile, outputPath,
-                _viewModel.Parse.Timeout, _viewModel.Parse.WithRBC);
+                _pathes.SitesFile,
+                _parse.Timeout, _parse.WithRBC);
+
+            _repo.Add(_dataExtractor.NewsBlock);
         }
     }
 }
