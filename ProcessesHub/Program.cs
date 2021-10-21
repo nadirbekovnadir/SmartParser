@@ -18,7 +18,7 @@ if (!Directory.Exists(output_path))
 int timeout = 30;
 bool with_rbk = false;
 
-var extractor = new DataExtractor();
+var extractor = new NewsExtractor();
 
 extractor.LoadingStarted += (s, e) => { Console.WriteLine($"Loading started [{e.SourcesCount}]"); };
 extractor.SourceLoaded += (s, e) => { Console.Write(e.Success ? "#" : "_"); };

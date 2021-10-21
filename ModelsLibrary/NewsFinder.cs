@@ -2,9 +2,9 @@
 
 namespace Models
 {
-    public class DataFinder
+    public class NewsFinder
     {
-        public DataFinder()
+        public NewsFinder()
         {
 
         }
@@ -31,12 +31,12 @@ namespace Models
             try
             {
                 var patterns = File.ReadAllLines(wordsPath);
-                var entities = NewsEntity.LoadFromCsv(filePath);
+                //var entities = NewsEntity.LoadFromCsv(filePath);
 
-                NewsEntities = DataHelper.Match(entities, patterns);
+                //NewsEntities = NewsEntity.Match(entities, patterns);
 
                 //string fileName = "";
-                NewsEntity.SaveToCsv(NewsEntities, outputPath);
+                //NewsEntity.SaveToCsv(NewsEntities, outputPath);
             }
             catch (Exception ex)
             {

@@ -3,6 +3,8 @@ using Models.Entities;
 using Models.Repositories;
 using ParserApp.BindingParams;
 using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace ParserApp.Commands
@@ -12,14 +14,14 @@ namespace ParserApp.Commands
         private readonly PathesParams _pathes;
         private readonly ParseParams _parse;
 
-        private readonly DataExtractor _dataExtractor;
-        private readonly IRepository<NewsBlock> _repo;
+        private readonly NewsExtractor _dataExtractor;
+        private readonly IRepository<NewsEntity> _repo;
 
         public StartParseCommand(
             PathesParams pathes,
             ParseParams parse,
-            DataExtractor dataExtractor,
-            IRepository<NewsBlock> repo,
+            NewsExtractor dataExtractor,
+            IRepository<NewsEntity> repo,
             Action<Exception> onException)
             : base(onException)
         {
@@ -36,7 +38,22 @@ namespace ParserApp.Commands
                 _pathes.SitesFile,
                 _parse.Timeout, _parse.WithRBC);
 
-            _repo.Add(_dataExtractor.NewsBlock);
+            _repo.Add(_dataExtractor.News);
+
+            var excepted = NewsEntity.Except(_dataExtractor.News, new List<NewsEntity>());
+
+            string timestamp = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
+            string dir = Path.Combine(_pathes.Output, "Parsed");
+
+            if (_parse.SaveAll)
+                NewsEntity.SaveToExcel(_dataExtractor.News, dir, "all_" + timestamp);
+
+
+            if (_parse.SaveNew)
+            {
+                NewsEntity.SaveToExcel(excepted, dir, "new_" + timestamp);
+            }
+                
         }
     }
 }

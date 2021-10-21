@@ -3,14 +3,11 @@
     public interface IRepository<T>
     {
         void Add(T entity);
+        void Add(List<T> entities);
+
         void Remove(T entity);
-        void Remove(string name);
+        void Remove(List<T> entities);
 
-        T GetLast();
-        IEnumerable<T> GetLast(int depth);
-        T Get(string name);
-
-        IEnumerable<T> GetAll();
-        IEnumerable<string> GetAllNames();
+        List<T> GetAll();
     }
 }

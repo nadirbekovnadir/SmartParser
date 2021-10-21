@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Threading;
 
-namespace ParserApp.VM
+namespace ParserApp.ViewModels
 {
     public class LogViewModel : BaseViewModel
     {

@@ -23,50 +23,42 @@
                         <RowDefinition Height="*"></RowDefinition>
                     </Grid.RowDefinitions>
 
-                    <Label Content="Parse" HorizontalContentAlignment="Center" FontSize="16" Margin="10,9,10,0" VerticalAlignment="Top"/>
-                    <CheckBox Content="with RBC" Margin="10,45,10,0" VerticalAlignment="Top" Height="15" 
+                    <Label Content="Parse" HorizontalContentAlignment="Center" FontSize="16" Margin="10,9,10,0" VerticalAlignment="Top" Grid.Row="0"/>
+                    <CheckBox Content="with RBC" Margin="10,45,10,0" VerticalAlignment="Top" Height="15" Grid.Row="0" 
                               IsChecked="{Binding Parse.WithRBC, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                    <Label Content="Timeout" Margin="10,69,10,0" VerticalAlignment="Top" Height="25"/>
-                    <TextBox Margin="10,94,10,0" TextWrapping="Wrap" VerticalAlignment="Top" 
+                    <Label Content="Timeout" Margin="10,69,10,0" VerticalAlignment="Top" Height="25" Grid.Row="0"/>
+                    <TextBox Margin="10,94,10,0" TextWrapping="Wrap" VerticalAlignment="Top" Grid.Row="0" 
                              Text="{Binding Parse.Timeout, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                    <CheckBox Content="To excel" Margin="10,0,10,65" Height="15" VerticalAlignment="Bottom"
-                              IsChecked="{Binding Parse.ToExcel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                    <Button Content="Start" Margin="10,0,10,40" Height="20" VerticalAlignment="Bottom"
+                    <CheckBox Content="Save new" Margin="10,0,10,85" Grid.Row="0"
+                              IsChecked="{Binding Parse.SaveNew, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="15" VerticalAlignment="Bottom"/>
+                    <CheckBox Content="Save all" Margin="10,0,10,65" Height="15" VerticalAlignment="Bottom" Grid.Row="0"
+                              IsChecked="{Binding Parse.SaveAll, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <Button Content="Start" Margin="10,0,10,40" Height="20" VerticalAlignment="Bottom" Grid.Row="0"
                             Command="{Binding StartParse}"/>
-                    <Button Content="Stop" Margin="10,0,10,15" Height="20" VerticalAlignment="Bottom"/>
+                    <Button Content="Stop" Margin="10,0,10,15" Height="20" VerticalAlignment="Bottom" Grid.Row="0"/>
 
-                    <Separator Margin="0,0,0,4" Height="6" VerticalAlignment="Bottom" />
+                    <Separator Margin="0,0,0,4" Height="6" VerticalAlignment="Bottom" Grid.Row="0"/>
 
-                    <Label Content="Except" HorizontalContentAlignment="Center" FontSize="16" Margin="10,10,10,0" VerticalAlignment="Top" Grid.Row="1"/>
-                    <Label Content="Depth" Margin="10,47,10,0" VerticalAlignment="Top" Height="25" Grid.Row="1"/>
-                    <TextBox Margin="10,72,10,0" TextWrapping="Wrap" Text="2" VerticalAlignment="Top" Grid.Row="1"/>
-                    <CheckBox Content="To excel" Margin="10,0,10,65" Grid.Row="1" Height="15" VerticalAlignment="Bottom"/>
-                    <Button Content="Start" Margin="10,0,10,40" Height="20" VerticalAlignment="Bottom" Grid.Row="1"/>
+                    <Label Content="Find" HorizontalContentAlignment="Center" FontSize="16" Margin="10,10,10,0" VerticalAlignment="Top" Grid.Row="1"/>
+                    <CheckBox Content="Save new" Margin="10,0,10,85" Grid.Row="1"
+                              IsChecked="{Binding Find.SaveNew, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="15" VerticalAlignment="Bottom"/>
+                    <CheckBox Content="Save all" Margin="10,0,10,65" Height="15" VerticalAlignment="Bottom" Grid.Row="1"
+                              IsChecked="{Binding Find.SaveAll, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <Button Content="Start" Margin="10,0,10,40" Height="20" VerticalAlignment="Bottom" Grid.Row="1"
+                            Command="{Binding StartFind}"/>
                     <Button Content="Stop" Margin="10,0,10,15" Height="20" VerticalAlignment="Bottom" Grid.Row="1"/>
 
                     <Separator Grid.Row="1" HorizontalAlignment="Center" Width="100" Height="6" VerticalAlignment="Bottom" />
 
-                    <Label Content="Find" HorizontalContentAlignment="Center" FontSize="16" Margin="10,10,10,0" VerticalAlignment="Top" Grid.Row="2"/>
-                    <CheckBox Content="Parsed" Margin="10,48,10,0" VerticalAlignment="Top" Grid.Row="2"
-                              IsChecked="{Binding Find.WithAll, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                    <CheckBox Content="Excepted" Margin="10,68,10,0" VerticalAlignment="Top" Grid.Row="2"
-                              IsChecked="{Binding Find.WithExcepted, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                    <CheckBox Content="To excel" Margin="10,0,10,65" Grid.Row="2" Height="15" VerticalAlignment="Bottom"
-                              IsChecked="{Binding Find.ToExcel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                    <Button Content="Start" Margin="10,0,10,40" Height="20" VerticalAlignment="Bottom" Grid.Row="2"
-                            Command="{Binding StartFind}"/>
+                    <Label Content="Auto" HorizontalContentAlignment="Center" FontSize="16" Margin="10,11,10,0" VerticalAlignment="Top" Grid.Row="2"/>
+                    <CheckBox Content="Parse" Margin="10,47,10,0" VerticalAlignment="Top" Grid.Row="2"/>
+                    <CheckBox Content="Find" Margin="10,67,10,0" VerticalAlignment="Top" Grid.Row="2"/>
+                    <Button Content="Start" Margin="10,0,10,40" Height="20" VerticalAlignment="Bottom" Grid.Row="2"/>
                     <Button Content="Stop" Margin="10,0,10,15" Height="20" VerticalAlignment="Bottom" Grid.Row="2"/>
+                    <Label Content="Period (min)" Margin="10,107,10,0" VerticalAlignment="Top" Height="25" Grid.Row="2"/>
+                    <TextBox Margin="10,132,10,0" TextWrapping="Wrap" Text="15" VerticalAlignment="Top" Grid.Row="2"/>
 
                     <Separator Grid.Row="2" HorizontalAlignment="Center" Width="100" Height="6" VerticalAlignment="Bottom" />
-
-                    <Label Content="Auto" HorizontalContentAlignment="Center" FontSize="16" Margin="10,11,10,0" VerticalAlignment="Top" Grid.Row="3"/>
-                    <CheckBox Content="Parse" Margin="10,47,10,0" VerticalAlignment="Top" Grid.Row="3"/>
-                    <CheckBox Content="Except" Margin="10,67,10,0" VerticalAlignment="Top" Grid.Row="3"/>
-                    <CheckBox Content="Find" Margin="10,87,10,0" VerticalAlignment="Top" Grid.Row="3"/>
-                    <Button Content="Start" Margin="10,0,10,40" Height="20" VerticalAlignment="Bottom" Grid.Row="3"/>
-                    <Button Content="Stop" Margin="10,0,10,15" Height="20" VerticalAlignment="Bottom" Grid.Row="3"/>
-                    <Label Content="Period (min)" Margin="10,107,10,0" VerticalAlignment="Top" Height="25" Grid.Row="3"/>
-                    <TextBox Margin="10,132,10,0" TextWrapping="Wrap" Text="15" VerticalAlignment="Top" Grid.Row="3"/>
                 </Grid>
             </Border>
 
@@ -102,7 +94,7 @@
                     <RowDefinition Height="Auto"></RowDefinition>
                     <RowDefinition Height="1*"></RowDefinition>
                 </Grid.RowDefinitions>
-                
+
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1*"></ColumnDefinition>
                     <ColumnDefinition Width="Auto"></ColumnDefinition>

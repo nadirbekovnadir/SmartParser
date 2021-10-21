@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace ParserApp.VM
+namespace ParserApp.ViewModels
 {
     public class BaseViewModel : INotifyPropertyChanged
     {

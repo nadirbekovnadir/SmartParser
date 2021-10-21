@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Models.Repositories
 {
-    public class FindedContext : IContext
+    public class NewsContext : IContext
     {
         public string Path => "";
     }

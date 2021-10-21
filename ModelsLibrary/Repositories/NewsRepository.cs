@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Models.Repositories
 {
-    public class NewsRepository : IRepository<NewsBlock>
+    public class NewsRepository : IRepository<NewsEntity>
     {
         private readonly IContext _context;
 
@@ -16,45 +16,31 @@ namespace Models.Repositories
             _context = context;
         }
 
-        public void Add(NewsBlock entity)
+        public void Add(List<NewsEntity> entity)
         {
             // Тут не так просто
-            NewsBlock.SaveToCsv(entity, _context.Path);
+            //NewsEntity.SaveToCsv(entity, _context.Path, "");
         }
 
-        public NewsBlock Get(string name)
+        public void Add(NewsEntity entity)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<NewsBlock> GetAll()
+        public void Remove(NewsEntity entity)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<string> GetAllNames()
+        public void Remove(List<NewsEntity> entities)
         {
             throw new NotImplementedException();
         }
 
-        public NewsBlock GetLast()
+        public List<NewsEntity> GetAll()
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<NewsBlock> GetLast(int depth)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Remove(NewsBlock entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Remove(string name)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

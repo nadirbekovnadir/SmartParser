@@ -6,12 +6,12 @@ using System.Text.RegularExpressions;
 namespace Models
 {
 
-    public class DataExtractor
+    public class NewsExtractor
     {
         public string ApplicationName { get; private set; }
         public string PythonPath { get; private set; }
         public string ScriptPath { get; private set; }
-        public NewsBlock NewsBlock { get; set; }
+        public List<NewsEntity> News { get; set; }
 
         public ProcessStartInfo ProcessInfo { get; private set; }
 
@@ -28,7 +28,7 @@ namespace Models
 
         public ProcessState State { get; private set; }
 
-        public DataExtractor()
+        public NewsExtractor()
         {
             ApplicationName = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? "";
             PythonPath = Path.Combine(ApplicationName, "parser_env\\Scripts\\python.exe");
@@ -125,12 +125,12 @@ namespace Models
                 State = ProcessState.Completed;
 
                 var pathFile = Directory.GetFiles(outputPath, "*.csv")[0];
-                NewsBlock = NewsEntity.LoadFromCsv(pathFile);
+                News = NewsEntity.LoadFromCsv(pathFile);
                 File.Delete(pathFile);
 
                 tcs.SetResult(process.ExitCode);
-                process.Dispose();
                 ProcessCompleted?.Invoke(this, new CompletedEventArgs { ExitCode = process.ExitCode });
+                process.Dispose();
             };
 
             process.OutputDataReceived += Process_OutputDataReceived;

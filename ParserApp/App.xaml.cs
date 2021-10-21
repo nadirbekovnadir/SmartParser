@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Models.Repositories;
+using ParserApp.Services;
+using ParserApp.Stores;
+using ParserApp.ViewModels;
 using System.Windows;
 
 namespace ParserApp
@@ -13,5 +11,32 @@ namespace ParserApp
     /// </summary>
     public partial class App : Application
     {
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            ProcessStateStore processStateStore = new ProcessStateStore();
+            NewsStore newsStore = new NewsStore();
+
+            ProcessesViewModel processesViewModel = new ProcessesViewModel(
+                processStateStore,
+                newsStore,
+                new DefaultDialogService(),
+                new NewsRepository(new NewsContext()));
+
+            LogViewModel logViewModel = new LogViewModel(
+                processStateStore);
+
+            MainViewModel mainViewModel = new MainViewModel(
+                processesViewModel,
+                logViewModel);
+
+            MainWindow = new MainWindow()
+            {
+                DataContext = mainViewModel
+            };
+
+            MainWindow.Show();
+
+            base.OnStartup(e);
+        }
     }
 }

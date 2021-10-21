@@ -1,4 +1,4 @@
-﻿using ParserApp.VM;
+﻿using ParserApp.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,7 +26,6 @@ namespace ParserApp
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = new MainViewModel();
         }
     }
 }

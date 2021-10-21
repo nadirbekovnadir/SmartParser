@@ -30,14 +30,25 @@ namespace ParserApp.BindingParams
             }
         }
 
-        private bool _toExcel = true;
-        public bool ToExcel
+        private bool _saveNew = true;
+        public bool SaveNew
         {
-            get => _toExcel;
+            get => _saveNew;
             set
             {
-                _toExcel = value;
-                OnPropertyChanged(nameof(ToExcel));
+                _saveNew = value;
+                OnPropertyChanged(nameof(SaveNew));
+            }
+        }
+
+        private bool _saveAll = true;
+        public bool SaveAll
+        {
+            get => _saveAll;
+            set
+            {
+                _saveAll = value;
+                OnPropertyChanged(nameof(SaveAll));
             }
         }
     }

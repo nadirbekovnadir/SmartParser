@@ -10,15 +10,10 @@ using System.IO;
 using Models.Entities;
 using Models.Repositories;
 
-namespace ParserApp.VM
+namespace ParserApp.ViewModels
 {
     public class ProcessesViewModel : BaseViewModel
     {
-        public string ParseFolder { get; } = "Parse";
-        public string ExceptFolder { get; } = "Except";
-        public string FindFolder { get; } = "Find";
-
-
         #region Binded params
 
         private PathesParams _pathes;
@@ -73,17 +68,15 @@ namespace ParserApp.VM
         #region Services
 
         private readonly IDialogService _dialogService;
-        private readonly DataExtractor _dataExtractor;
-        private readonly DataFinder _dataFinder;
+        private readonly NewsExtractor _dataExtractor;
+        private readonly NewsFinder _dataFinder;
 
         #endregion
 
 
         #region Repositories
 
-        private readonly IRepository<NewsBlock> _extractedRepository;
-        private readonly IRepository<NewsBlock> _exceptedRepository;
-        private readonly IRepository<NewsBlock> _findedRepository;
+        private readonly IRepository<NewsEntity> _newsRepo;
 
         #endregion
 
@@ -91,25 +84,27 @@ namespace ParserApp.VM
         #region Stores
 
         private readonly ProcessStateStore _processStateStore;
+        private readonly NewsStore _newsStore;
 
         #endregion
 
 
+        #region Constructor
+
         public ProcessesViewModel(
             ProcessStateStore processStateStore,
+            NewsStore newsStore,
             IDialogService dialogService,
-            IRepository<NewsBlock> extractedRepository,
-            IRepository<NewsBlock> exceptedRepository,
-            IRepository<NewsBlock> findedRepository)
+            IRepository<NewsEntity> newsRepo)
         {
             _processStateStore = processStateStore;
+            _newsStore = newsStore;
+
             _dialogService = dialogService;
 
-            _extractedRepository = extractedRepository;
-            _exceptedRepository = exceptedRepository;
-            _findedRepository = findedRepository;
+            _newsRepo = newsRepo;
 
-            _dataExtractor = new DataExtractor();
+            _dataExtractor = new NewsExtractor();
 
             _dataExtractor.LoadingStarted += OnLoadingStarted;
             _dataExtractor.SourceLoaded += OnSourceLoaded;
@@ -122,40 +117,42 @@ namespace ParserApp.VM
             _dataExtractor.ProcessCompleted += OnExtractingCompleted;
 
 
-            _dataFinder = new DataFinder();
+            _dataFinder = new NewsFinder();
 
             _dataFinder.ProcessCompleted += OnFindingCompleted;
         }
+
+        #endregion
 
 
         #region Event handlers
 
 
-        private void OnLoadingStarted(object? sender, DataExtractor.LoadingEventArgs e)
+        private void OnLoadingStarted(object? sender, NewsExtractor.LoadingEventArgs e)
         {
             _processStateStore.OnLoadingStarted(e.SourcesCount);
         }
 
-        private void OnSourceLoaded(object? sender, DataExtractor.LoadedEventArgs e)
+        private void OnSourceLoaded(object? sender, NewsExtractor.LoadedEventArgs e)
         {
             _processStateStore.OnSourceLoaded(e.Value, e.Success);
         }
 
-        private void OnLoadingCompleted(object? sender, DataExtractor.LoadingEventArgs e)
+        private void OnLoadingCompleted(object? sender, NewsExtractor.LoadingEventArgs e)
         {
             _processStateStore.OnLoadingCompleted(e.SourcesCount);
         }
 
-        private void OnParsingStarted(object? sender, DataExtractor.ParsingEventArgs e)
+        private void OnParsingStarted(object? sender, NewsExtractor.ParsingEventArgs e)
         {
             _processStateStore.OnParsingStarted(e.SourcesCount);
         }
 
-        private void OnSourceParsed(object? sender, DataExtractor.ParsedEventArgs e)
+        private void OnSourceParsed(object? sender, NewsExtractor.ParsedEventArgs e)
         {
             _processStateStore.OnSourceParsed(e.Value, e.Success);
         }
-        private void OnParsingCompleted(object? sender, DataExtractor.ParsingEventArgs e)
+        private void OnParsingCompleted(object? sender, NewsExtractor.ParsingEventArgs e)
         {
             _processStateStore.OnParsingCompleted(e.SourcesCount, e.EntitiesCount);
         }
@@ -215,7 +212,7 @@ namespace ParserApp.VM
                     Pathes,
                     Parse,
                     _dataExtractor,
-                    _findedRepository,
+                    _newsRepo,
                     (ex) => { });
                 return _startParse;
             }
@@ -228,7 +225,6 @@ namespace ParserApp.VM
             get
             {
                 _startFind ??= new StartFindCommand(
-                    this,
                     _dataFinder,
                     (ex) => { });
                 return _startFind;

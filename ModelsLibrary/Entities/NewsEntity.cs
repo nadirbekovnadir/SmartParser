@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Models.Entities
 {
-    public class NewsEntity : IEquatable<NewsEntity>
+    public partial class NewsEntity : IEquatable<NewsEntity>
     {
         public string Name {  get; set; }
         public string Title {  get; set; }
@@ -21,36 +21,6 @@ namespace Models.Entities
 
         [Format(@"yyyy-MM-dd HH:mm:ss")]
         public DateTime Date {  get; set; }
-
-        private static CsvConfiguration _csvConf;
-        static NewsEntity()
-        {
-            _csvConf = new CsvConfiguration(CultureInfo.InvariantCulture)
-            {
-                NewLine = Environment.NewLine
-            };
-
-        }
-
-        public static List<NewsEntity> LoadFromCsv(string path)
-        {
-            var entities = new List<NewsEntity>();
-
-            using (var reader = new StreamReader(path))
-            using (var csv = new CsvReader(reader, _csvConf))
-            {
-                entities = csv.GetRecords<NewsEntity>().ToList();
-            }
-
-            return entities;
-        }
-
-        public static void SaveToCsv(List<NewsEntity> entities, string path)
-        {
-            using var writer = new StreamWriter(path);
-            using var csv = new CsvWriter(writer, _csvConf);
-            csv.WriteRecords(entities);
-        }
 
         public bool Equals(NewsEntity? other) =>
             other != null &&
