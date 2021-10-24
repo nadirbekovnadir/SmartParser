@@ -52,13 +52,16 @@ namespace ParserApp.Commands
             string timestamp = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
             string dir = Path.Combine(_pathes.Output, "Parsed");
 
+            if (!Directory.Exists(dir))
+                Directory.CreateDirectory(dir);
+
             var sheetes = new List<string>();
             var entities = new List<List<NewsEntity>>(); 
 
             if (_parse.SaveAll)
             {
                 sheetes.Add("All");
-                entities.Add(_dataExtractor.News.ConvertAll(news => new NewsEntity(news)));
+                entities.Add(_newsStore.ParsedAll.ConvertAll(news => new NewsEntity(news)));
             }
 
 

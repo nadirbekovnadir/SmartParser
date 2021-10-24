@@ -11,7 +11,7 @@ namespace Models
         public string ApplicationName { get; private set; }
         public string PythonPath { get; private set; }
         public string ScriptPath { get; private set; }
-        public List<NewsEntity> News { get; set; }
+        public List<NewsEntity> News { get; set; } = new List<NewsEntity>();
 
         public ProcessStartInfo ProcessInfo { get; private set; }
 

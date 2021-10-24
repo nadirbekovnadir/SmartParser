@@ -4,46 +4,53 @@ namespace Models
 {
     public class NewsFinder
     {
+        public List<NewsEntity> News { get; set; } = new List<NewsEntity>();
+
         public NewsFinder()
         {
 
         }
 
-        public List<NewsEntity> NewsEntities {  get; set; }
-
         public event EventHandler<CompletedEventArgs>? ProcessCompleted;
 
-        public Task<int> StartAsync(string wordsPath, string filePath, string outputPath)
+        public Task<int> StartAsync(List<NewsEntity> entities, string pattern)
         {
-            var task = Task.Factory.StartNew(() => Start(wordsPath, filePath, outputPath));
-            task.ContinueWith(
-                (a) => 
-                    ProcessCompleted?.Invoke(
-                    this, new CompletedEventArgs { ExitCode = a.Result }
-                )
-            );
+            var task = Task.Factory.StartNew(() => Start(entities, pattern));
 
             return task;
         }
 
-        private int Start(string wordsPath, string filePath, string outputPath)
+        public int Start(List<NewsEntity> entities, string pattern)
         {
+            int result = 0;
             try
             {
-                var patterns = File.ReadAllLines(wordsPath);
-                //var entities = NewsEntity.LoadFromCsv(filePath);
-
-                //NewsEntities = NewsEntity.Match(entities, patterns);
-
-                //string fileName = "";
-                //NewsEntity.SaveToCsv(NewsEntities, outputPath);
+                //something
+                //Небольшой заполнитель для проверки работы
+                News = new List<NewsEntity>
+                {
+                    new NewsEntity
+                    {
+                        Name = "first"
+                    },
+                    new NewsEntity
+                    {
+                        Name = "second"
+                    }
+                };
             }
             catch (Exception ex)
             {
-                return -1;
+                result = -1;
+            }
+            finally
+            {
+                // Вызовется при окончании основного процесса, то есть после установки всех свойств уж точно
+                ProcessCompleted?.Invoke(
+                    this, new CompletedEventArgs { ExitCode = result });
             }
 
-            return 0;
+            return result;
         }
     }
 }

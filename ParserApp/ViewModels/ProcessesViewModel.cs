@@ -225,6 +225,8 @@ namespace ParserApp.ViewModels
             get
             {
                 _startFind ??= new StartFindCommand(
+                    this,
+                    _newsStore,
                     _dataFinder,
                     (ex) => { });
                 return _startFind;

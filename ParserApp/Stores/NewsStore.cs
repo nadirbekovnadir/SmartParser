@@ -9,8 +9,8 @@ namespace ParserApp.Stores
 {
     public class NewsStore
     {
-        public event Action NewChanged;
         public event Action FindedChanged;
+        public event Action ParsedChanged;
 
         private List<NewsEntity> _parsedAll = new List<NewsEntity>();
         public List<NewsEntity> ParsedAll
@@ -34,7 +34,35 @@ namespace ParserApp.Stores
             }
         }
 
+
+        private List<List<NewsEntity>> _findedAll = new List<List<NewsEntity>>();
+        public List<List<NewsEntity>> FindedAll
+        {
+            get => _findedAll;
+            set
+            {
+                _findedAll = value;
+                OnFindedChanged();
+            }
+        }
+
+        private List<List<NewsEntity>> _findedNew = new List<List<NewsEntity>>();
+        public List<List<NewsEntity>> FindedNew
+        {
+            get => _findedNew;
+            set
+            {
+                _findedNew = value;
+                OnFindedChanged();
+            }
+        }
+
         private void OnParsedChanged()
+        {
+            ParsedChanged?.Invoke();
+        }
+
+        private void OnFindedChanged()
         {
             FindedChanged?.Invoke();
         }

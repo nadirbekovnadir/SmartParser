@@ -14,13 +14,13 @@ namespace Models.Entities
 {
     public partial class NewsEntity : IEquatable<NewsEntity>
     {
-        public string Name {  get; set; }
-        public string Title {  get; set; }
-        public string Description {  get; set; }
-        public string Link {  get; set; }
+        public string Name { get; set; } = "";
+        public string Title { get; set; } = "";
+        public string Description { get; set; } = "";
+        public string Link { get; set; } = "";
 
         [Format(@"yyyy-MM-dd HH:mm:ss")]
-        public DateTime Date {  get; set; }
+        public DateTime Date {  get; set; } = DateTime.Now;
 
         public NewsEntity()
         {

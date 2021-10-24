@@ -9,7 +9,6 @@ namespace Models.Entities
     public partial class NewsEntity
     {
         private static CsvConfiguration _csvConf;
-        private NewsEntity news;
 
         static NewsEntity()
         {
@@ -40,9 +39,6 @@ namespace Models.Entities
 
         public static void SaveToCsv(List<NewsEntity> entities, string dir, string fileName)
         {
-            if (!Directory.Exists(dir))
-                Directory.CreateDirectory(dir);
-
             string path = Path.Combine(dir, fileName) + ".csv";
 
             SaveToCsv(entities, path);
