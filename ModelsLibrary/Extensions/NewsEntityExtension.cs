@@ -9,6 +9,7 @@ namespace Models.Entities
     public partial class NewsEntity
     {
         private static CsvConfiguration _csvConf;
+        private NewsEntity news;
 
         static NewsEntity()
         {

@@ -3,6 +3,8 @@ using Models;
 using Models.Entities;
 using Models.Repositories;
 using ParserApp.BindingParams;
+using ParserApp.Stores;
+using ParserApp.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -14,20 +16,22 @@ namespace ParserApp.Commands
     {
         private readonly PathesParams _pathes;
         private readonly ParseParams _parse;
+        private readonly NewsStore _newsStore;
 
         private readonly NewsExtractor _dataExtractor;
         private readonly IRepository<NewsEntity> _repo;
 
         public StartParseCommand(
-            PathesParams pathes,
-            ParseParams parse,
+            ProcessesViewModel vm,
+            NewsStore newsStore,
             NewsExtractor dataExtractor,
             IRepository<NewsEntity> repo,
             Action<Exception> onException)
             : base(onException)
         {
-            _pathes = pathes;
-            _parse = parse;
+            _pathes = vm.Pathes;
+            _parse = vm.Parse;
+            _newsStore = newsStore;
 
             _dataExtractor = dataExtractor;
             _repo = repo;
@@ -41,7 +45,9 @@ namespace ParserApp.Commands
 
             _repo.Add(_dataExtractor.News);
 
-            var excepted = NewsEntity.Except(_dataExtractor.News, new List<NewsEntity>());
+            _newsStore.ParsedNew = NewsEntity.Except(_dataExtractor.News, _newsStore.ParsedAll);
+            _newsStore.ParsedAll = _dataExtractor.News;
+
 
             string timestamp = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
             string dir = Path.Combine(_pathes.Output, "Parsed");
@@ -52,14 +58,14 @@ namespace ParserApp.Commands
             if (_parse.SaveAll)
             {
                 sheetes.Add("All");
-                entities.Add(_dataExtractor.News);
+                entities.Add(_dataExtractor.News.ConvertAll(news => new NewsEntity(news)));
             }
 
 
             if (_parse.SaveNew)
             {
                 sheetes.Add("New");
-                entities.Add(excepted);
+                entities.Add(_newsStore.ParsedNew.ConvertAll(news => new NewsEntity(news)));
             }
 
             NewsEntity.SaveToExcel(entities, dir, timestamp, sheetes);

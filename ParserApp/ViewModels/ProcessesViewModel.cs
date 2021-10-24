@@ -209,8 +209,8 @@ namespace ParserApp.ViewModels
             get
             {
                 _startParse ??= new StartParseCommand(
-                    Pathes,
-                    Parse,
+                    this,
+                    _newsStore,
                     _dataExtractor,
                     _newsRepo,
                     (ex) => { });

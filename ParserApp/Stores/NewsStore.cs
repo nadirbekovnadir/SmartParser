@@ -12,35 +12,29 @@ namespace ParserApp.Stores
         public event Action NewChanged;
         public event Action FindedChanged;
 
-
-        private List<NewsEntity> _new;
-        public List<NewsEntity> New
+        private List<NewsEntity> _parsedAll = new List<NewsEntity>();
+        public List<NewsEntity> ParsedAll
         {
-            get => _new;
+            get => _parsedAll;
             set
             {
-                _new = value;
-                OnNewChanged();
+                _parsedAll = value;
+                OnParsedChanged();
             }
         }
 
-        private List<NewsEntity> _finded;
-        public List<NewsEntity> Finded
+        private List<NewsEntity> _parsedNew = new List<NewsEntity>();
+        public List<NewsEntity> ParsedNew
         {
-            get => _finded;
+            get => _parsedNew;
             set
             {
-                _finded = value;
-                OnFindedChanged();
+                _parsedNew = value;
+                OnParsedChanged();
             }
         }
 
-        private void OnNewChanged()
-        {
-            NewChanged?.Invoke();
-        }
-
-        private void OnFindedChanged()
+        private void OnParsedChanged()
         {
             FindedChanged?.Invoke();
         }

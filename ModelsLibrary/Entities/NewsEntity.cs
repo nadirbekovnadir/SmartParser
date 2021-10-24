@@ -22,6 +22,20 @@ namespace Models.Entities
         [Format(@"yyyy-MM-dd HH:mm:ss")]
         public DateTime Date {  get; set; }
 
+        public NewsEntity()
+        {
+
+        }
+
+        public NewsEntity(NewsEntity other)
+        {
+            Name = other.Name;
+            Title = other.Title;
+            Description = other.Description;
+            Link = other.Link;
+            Date = other.Date;
+        }
+
         public bool Equals(NewsEntity? other) =>
             other != null &&
             Name == other.Name && 
