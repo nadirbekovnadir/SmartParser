@@ -1,5 +1,6 @@
 ﻿using CsvHelper;
 using CsvHelper.Configuration;
+using Ganss.Excel;
 using System.Globalization;
 using System.Text.RegularExpressions;
 
@@ -76,15 +77,26 @@ namespace Models.Entities
             return entities;
         }
 
-        public static void SaveToExcel(List<NewsEntity> entities, string dir, string fileName)
+        public static void SaveToExcel(List<NewsEntity> entities, string dir, string fileName, string sheetName)
         {
             string path = Path.Combine(dir, fileName) + ".xlsx";
-            SaveToExcel(entities, path);
+            ExcelMapper excelMapper = new ExcelMapper();
+            SaveToExcel(entities, excelMapper, path, sheetName);
         }
 
-        public static void SaveToExcel(List<NewsEntity> entities, string path)
+        public static void SaveToExcel(List<List<NewsEntity>> entities, string dir, string fileName, List<string> sheetNames)
         {
-            
+            string path = Path.Combine(dir, fileName) + ".xlsx";
+            ExcelMapper excelMapper = new ExcelMapper();
+            for (int i = 0; i < entities.Count; i++)
+            {
+                SaveToExcel(entities[i], excelMapper, path, sheetNames[i]);
+            }
+        }
+
+        private static void SaveToExcel(List<NewsEntity> entities, ExcelMapper excelMapper, string path, string sheetName)
+        {
+            excelMapper.Save(path, entities, sheetName);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Models;
+﻿using Ganss.Excel;
+using Models;
 using Models.Entities;
 using Models.Repositories;
 using ParserApp.BindingParams;
@@ -45,15 +46,23 @@ namespace ParserApp.Commands
             string timestamp = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
             string dir = Path.Combine(_pathes.Output, "Parsed");
 
+            var sheetes = new List<string>();
+            var entities = new List<List<NewsEntity>>(); 
+
             if (_parse.SaveAll)
-                NewsEntity.SaveToExcel(_dataExtractor.News, dir, "all_" + timestamp);
+            {
+                sheetes.Add("All");
+                entities.Add(_dataExtractor.News);
+            }
 
 
             if (_parse.SaveNew)
             {
-                NewsEntity.SaveToExcel(excepted, dir, "new_" + timestamp);
+                sheetes.Add("New");
+                entities.Add(excepted);
             }
-                
+
+            NewsEntity.SaveToExcel(entities, dir, timestamp, sheetes);
         }
     }
 }
