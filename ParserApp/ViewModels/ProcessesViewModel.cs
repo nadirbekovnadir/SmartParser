@@ -117,7 +117,7 @@ namespace ParserApp.ViewModels
             _dataExtractor.ProcessCompleted += OnExtractingCompleted;
 
 
-            _dataFinder = new NewsFinder();
+            _dataFinder = new NewsFinder(new ParserService());
 
             _dataFinder.ProcessCompleted += OnFindingCompleted;
         }

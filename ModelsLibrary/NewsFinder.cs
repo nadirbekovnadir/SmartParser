@@ -1,14 +1,17 @@
 ﻿using Models.Entities;
+using System.Text.RegularExpressions;
 
 namespace Models
 {
     public class NewsFinder
     {
+        private readonly IParserService _parserService;
+
         public List<NewsEntity> News { get; set; } = new List<NewsEntity>();
 
-        public NewsFinder()
+        public NewsFinder(IParserService parserService)
         {
-
+            _parserService = parserService;
         }
 
         public event EventHandler<CompletedEventArgs>? ProcessCompleted;
@@ -16,7 +19,6 @@ namespace Models
         public Task<int> StartAsync(List<NewsEntity> entities, string pattern)
         {
             var task = Task.Factory.StartNew(() => Start(entities, pattern));
-
             return task;
         }
 
@@ -25,19 +27,19 @@ namespace Models
             int result = 0;
             try
             {
-                //something
-                //Небольшой заполнитель для проверки работы
-                News = new List<NewsEntity>
-                {
-                    new NewsEntity
-                    {
-                        Name = "first"
-                    },
-                    new NewsEntity
-                    {
-                        Name = "second"
-                    }
-                };
+                var patterns = _parserService.Decompose(pattern);
+
+                var regexes = from p in patterns
+                              select new Regex(p, RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
+                var res = from entity in entities
+                          where _parserService.Compute(
+                              (from r in regexes
+                               select r.Match(entity.Title).Success || r.Match(entity.Description).Success)
+                               .ToList())
+                          select entity;
+
+                News = res.ToList();
             }
             catch (Exception ex)
             {

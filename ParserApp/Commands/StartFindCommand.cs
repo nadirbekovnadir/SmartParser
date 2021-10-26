@@ -38,9 +38,8 @@ namespace ParserApp.Commands
         protected async override Task ExecuteAsync(object? parameter)
         {
             List<string> patterns = new List<string>()
-            { 
-                "долл",
-                "Привет"
+            {
+                "дол # руб"
             };
 
             // Можно конечно просто очистить список store а в конце вызвать метод, говорящий о том, что сущности обновились
@@ -49,9 +48,9 @@ namespace ParserApp.Commands
 
             foreach (var pattern in patterns)
             {
-                _dataFinder.Start(_newsStore.ParsedNew, pattern); // Создать store для всех слов, которые используются
+                await _dataFinder.StartAsync(_newsStore.ParsedNew, pattern); // Создать store для всех слов, которые используются
                 findedNew.Add(_dataFinder.News); // такое получение данных надо будет отрефакторить
-                _dataFinder.Start(_newsStore.ParsedAll, pattern);
+                await _dataFinder.StartAsync(_newsStore.ParsedAll, pattern);
                 findedAll.Add(_dataFinder.News);
             }
 
