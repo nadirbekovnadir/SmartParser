@@ -18,11 +18,13 @@ namespace ParserApp.Commands
         private readonly PathesParams _pathes;
         private readonly FindParams _find;
 
+        private readonly WordsStore _wordsStore;
         private readonly NewsStore _newsStore;
         private readonly NewsFinder _dataFinder;
 
         public StartFindCommand(
             ProcessesViewModel vm,
+            WordsStore wordsStore,
             NewsStore newsStore,
             NewsFinder dataFinder,
             Action<Exception> onException)
@@ -31,16 +33,14 @@ namespace ParserApp.Commands
             _pathes = vm.Pathes;
             _find = vm.Find;
 
+            _wordsStore = wordsStore;
             _newsStore = newsStore;
             _dataFinder = dataFinder;
         }
 
         protected async override Task ExecuteAsync(object? parameter)
         {
-            List<string> patterns = new List<string>()
-            {
-                "дол # руб"
-            };
+            List<string> patterns = new List<string>(_wordsStore.Words);
 
             // Можно конечно просто очистить список store а в конце вызвать метод, говорящий о том, что сущности обновились
             var findedNew = new List<List<NewsEntity>>();

@@ -1,6 +1,7 @@
 ﻿using Models.Entities;
 using ParserApp.Stores;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Windows;
 using System.Windows.Threading;
 
@@ -45,6 +46,17 @@ namespace ParserApp.ViewModels
 
         public ObservableCollection<string> LogStrings { get; }
 
+        private string _selectedItem = string.Empty;
+        public string SelectedItem
+        {
+            get => _selectedItem;
+            set
+            {
+                _selectedItem = value;
+                OnPropertyChanged(nameof(SelectedItem));
+            }
+        }
+
         #endregion
 
         private ProcessStateStore _processStateStore;
@@ -56,6 +68,7 @@ namespace ParserApp.ViewModels
             _dispatcher = Application.Current.Dispatcher;
 
             LogStrings = new ObservableCollection<string>();
+            LogStrings.CollectionChanged += OnLogStringChanged;
 
             _processStateStore.LoadingStarted += OnLoadingStarted;
             _processStateStore.SourceLoaded += OnSourceLoaded;
@@ -68,6 +81,11 @@ namespace ParserApp.ViewModels
 
 
         #region Event handlers
+
+        private void OnLogStringChanged(object? sender, NotifyCollectionChangedEventArgs e)
+        {
+            SelectedItem = e.NewItems?[0] as string ?? string.Empty;
+        }
 
         public void OnLoadingStarted(int sourcesCount)
         {

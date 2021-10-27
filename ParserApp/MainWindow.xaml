@@ -131,9 +131,9 @@
                                     Content="{Binding ProcessInfo, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
                             </DockPanel>
                         </Border>
-                        <ScrollViewer>
-                            <ListBox ItemsSource="{Binding LogStrings, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
-                        </ScrollViewer>
+                        <ListBox 
+                            ItemsSource="{Binding LogStrings, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                            SelectedItem="{Binding SelectedItem,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                     </DockPanel>
                 </Border>
 

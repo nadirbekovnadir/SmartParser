@@ -15,9 +15,11 @@ namespace ParserApp
         {
             ProcessStateStore processStateStore = new ProcessStateStore();
             NewsStore newsStore = new NewsStore();
+            WordsStore wordsStore = new WordsStore(new WordsProvider());
 
             ProcessesViewModel processesViewModel = new ProcessesViewModel(
                 processStateStore,
+                wordsStore,
                 newsStore,
                 new DefaultDialogService(),
                 new NewsRepository(new NewsContext()));

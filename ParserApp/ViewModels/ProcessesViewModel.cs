@@ -84,6 +84,7 @@ namespace ParserApp.ViewModels
         #region Stores
 
         private readonly ProcessStateStore _processStateStore;
+        private readonly WordsStore _wordsStore;
         private readonly NewsStore _newsStore;
 
         #endregion
@@ -93,11 +94,13 @@ namespace ParserApp.ViewModels
 
         public ProcessesViewModel(
             ProcessStateStore processStateStore,
+            WordsStore wordsStore,
             NewsStore newsStore,
             IDialogService dialogService,
             IRepository<NewsEntity> newsRepo)
         {
             _processStateStore = processStateStore;
+            _wordsStore = wordsStore;
             _newsStore = newsStore;
 
             _dialogService = dialogService;
@@ -188,7 +191,10 @@ namespace ParserApp.ViewModels
         {
             get
             {
-                _openWordsFile ??= new OpenWordsFileCommand(Pathes, _dialogService);
+                _openWordsFile ??= new OpenWordsFileCommand(
+                    Pathes,
+                    _wordsStore,
+                    _dialogService);
                 return _openWordsFile;
             }
         }
@@ -226,6 +232,7 @@ namespace ParserApp.ViewModels
             {
                 _startFind ??= new StartFindCommand(
                     this,
+                    _wordsStore,
                     _newsStore,
                     _dataFinder,
                     (ex) => { });

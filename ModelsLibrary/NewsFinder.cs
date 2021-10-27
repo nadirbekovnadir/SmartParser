@@ -29,13 +29,14 @@ namespace Models
             {
                 var patterns = _parserService.Decompose(pattern);
 
-                var regexes = from p in patterns
-                              select new Regex(p, RegexOptions.IgnoreCase | RegexOptions.Compiled);
+                var regexes = (from p in patterns
+                               select new Regex(p, RegexOptions.IgnoreCase | RegexOptions.Compiled))
+                               .ToList();
 
-                var res = from entity in entities
+                var res = from entity in entities.AsParallel()
                           where _parserService.Compute(
                               (from r in regexes
-                               select r.Match(entity.Title).Success || r.Match(entity.Description).Success)
+                               select r.IsMatch(entity.Title) || r.IsMatch(entity.Description))
                                .ToList())
                           select entity;
 

@@ -1,5 +1,6 @@
 ﻿using ParserApp.BindingParams;
 using ParserApp.Interfaces;
+using ParserApp.Stores;
 using System.IO;
 
 namespace ParserApp.Commands
@@ -7,12 +8,16 @@ namespace ParserApp.Commands
     public class OpenWordsFileCommand : BaseCommand
     {
         PathesParams _pathes;
+        private WordsStore _wordsStore;
         IDialogService _dialogService;
 
         public OpenWordsFileCommand(
-            PathesParams pathes, IDialogService dialogService)
+            PathesParams pathes,
+            WordsStore wordsStore,
+            IDialogService dialogService)
         {
             _pathes = pathes;
+            _wordsStore = wordsStore;
             _dialogService = dialogService;
         }
 
@@ -22,6 +27,7 @@ namespace ParserApp.Commands
                 return;
 
             _pathes.WordsFile = _dialogService.FilePath;
+            _wordsStore.Load(_dialogService.FilePath);
         }
     }
 }
