@@ -1,4 +1,4 @@
-﻿using ParserApp.BindingParams;
+﻿using ParserApp.Params;
 using ParserApp.Commands;
 using ParserApp.Interfaces;
 using Models;
@@ -9,6 +9,7 @@ using System;
 using System.IO;
 using Models.Entities;
 using Models.Repositories;
+using ParserApp.Services;
 
 namespace ParserApp.ViewModels
 {
@@ -46,7 +47,7 @@ namespace ParserApp.ViewModels
                 OnPropertyChanged(nameof(Parse));
             }
         }
-
+        
         private FindParams _find;
         public FindParams Find
         {
@@ -62,11 +63,28 @@ namespace ParserApp.ViewModels
             }
         }
 
+        private AutoParams _auto;
+
+        public AutoParams Auto
+        {
+            get 
+            {
+                _auto ??= new AutoParams();
+                return _auto; 
+            }
+            set 
+            {
+                _auto = value; 
+            }
+        }
+
+
         #endregion
 
 
         #region Services
 
+        private readonly AutoExecutionCommandsService _autoExecutionCommandsService;
         private readonly IDialogService _dialogService;
         private readonly NewsExtractor _dataExtractor;
         private readonly NewsFinder _dataFinder;
@@ -96,6 +114,7 @@ namespace ParserApp.ViewModels
             ProcessStateStore processStateStore,
             WordsStore wordsStore,
             NewsStore newsStore,
+            AutoExecutionCommandsService autoExecutionCommandsService,
             IDialogService dialogService,
             IRepository<NewsEntity> newsRepo)
         {
@@ -103,6 +122,7 @@ namespace ParserApp.ViewModels
             _wordsStore = wordsStore;
             _newsStore = newsStore;
 
+            _autoExecutionCommandsService = autoExecutionCommandsService;
             _dialogService = dialogService;
 
             _newsRepo = newsRepo;
@@ -237,6 +257,30 @@ namespace ParserApp.ViewModels
                     _dataFinder,
                     (ex) => { });
                 return _startFind;
+            }
+        }
+
+        private IBaseCommand _startAuto;
+        public IBaseCommand StartAuto
+        {
+            get
+            {
+                _startAuto ??= new StartAutoCommand(
+                    this,
+                    _autoExecutionCommandsService);
+                return _startAuto;
+            }
+        }
+
+        private IBaseCommand _stopAuto;
+        public IBaseCommand StopAuto
+        {
+            get
+            {
+                _stopAuto ??= new StopAutoCommand(
+                    this,
+                    _autoExecutionCommandsService);
+                return _stopAuto;
             }
         }
 

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ParserApp.BindingParams
+namespace ParserApp.Params
 {
     public class BaseParams : INotifyPropertyChanged
     {

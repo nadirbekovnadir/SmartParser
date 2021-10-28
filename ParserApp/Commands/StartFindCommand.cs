@@ -1,7 +1,7 @@
 ﻿using Models;
 using Models.Entities;
 using Models.Repositories;
-using ParserApp.BindingParams;
+using ParserApp.Params;
 using ParserApp.Stores;
 using ParserApp.ViewModels;
 using System;

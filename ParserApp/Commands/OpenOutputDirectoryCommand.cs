@@ -1,4 +1,4 @@
-﻿using ParserApp.BindingParams;
+﻿using ParserApp.Params;
 using ParserApp.Interfaces;
 using System.IO;
 

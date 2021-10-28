@@ -21,6 +21,7 @@ namespace ParserApp
                 processStateStore,
                 wordsStore,
                 newsStore,
+                new AutoExecutionCommandsService(),
                 new DefaultDialogService(),
                 new NewsRepository(new NewsContext()));
 

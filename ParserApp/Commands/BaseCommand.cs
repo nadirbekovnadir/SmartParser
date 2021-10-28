@@ -8,11 +8,6 @@ namespace ParserApp.Commands
     {
         public virtual event EventHandler? CanExecuteChanged;
 
-        public virtual void RaiseCanExecuteChanged()
-        {
-            throw new NotImplementedException();
-        }
-
         public virtual bool CanExecute(object? parameter)
         {
             return true;
@@ -21,6 +16,11 @@ namespace ParserApp.Commands
         public virtual void Execute(object? parameter)
         {
             throw new NotImplementedException();
+        }
+
+        public virtual void RaiseCanExecuteChanged()
+        {
+            CanExecuteChanged?.Invoke(this, EventArgs.Empty);
         }
     }
 }
