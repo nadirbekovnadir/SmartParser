@@ -19,7 +19,7 @@ from DataExtractor import DataExtractor
 def main():
 
     sites_file = r'C:\Users\Nadir\Documents\Parser_data\sites_test.txt'
-    output_path = r'C:\Users\Nadir\Documents\Parser_data'
+    output_path = r'.'
     timeout = 15
 
     with_rbk = False

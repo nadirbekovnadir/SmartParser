@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using System.Windows;
 
 namespace Models
 {
@@ -30,8 +31,8 @@ namespace Models
 
         public NewsExtractor()
         {
-            ApplicationName = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? "";
-            PythonPath = Path.Combine(ApplicationName, "parser_env\\Scripts\\python.exe");
+            ApplicationName = Path.GetDirectoryName(AppContext.BaseDirectory) ?? "";
+            PythonPath = Path.Combine(ApplicationName, "parser_venv\\Scripts\\python.exe");
             ScriptPath = Path.Combine(ApplicationName, "Scripts\\ExtractProcess.py");
 
             ProcessInfo = new ProcessStartInfo
@@ -120,22 +121,50 @@ namespace Models
                 EnableRaisingEvents = true
             };
 
+
             process.Exited += (s, e) =>
             {
                 State = ProcessState.Completed;
 
-                var pathFile = Directory.GetFiles(outputPath, "*.csv")[0];
-                News = NewsEntity.LoadFromCsv(pathFile);
-                File.Delete(pathFile);
+                var fs = File.AppendText(Path.Combine(outputPath, "logAsync.txt"));
+                try
+                {
+                    
+
+                    fs.WriteLine($"[{DateTime.Now}] Process ended: {process.ExitCode}");
+
+                    var pathFile = Directory.GetFiles(outputPath, "*.csv")[0];
+                    fs.WriteLine($"[{DateTime.Now}] File gotten");
+
+                    News = NewsEntity.LoadFromCsv(pathFile); ///
+                    fs.WriteLine($"[{DateTime.Now}] News read");
+
+                    File.Delete(pathFile);
+                    fs.WriteLine($"[{DateTime.Now}] File deleted");
+                    fs.Flush();
+                    fs.Dispose();
+                }
+                catch (Exception ex)
+                {
+                    fs.WriteLine($"[{DateTime.Now}] Process completed error: {ex.Message}");
+                    fs.Flush();
+                    fs.Dispose();
+                }
 
                 tcs.SetResult(process.ExitCode);
                 ProcessCompleted?.Invoke(this, new CompletedEventArgs { ExitCode = process.ExitCode });
                 process.Dispose();
             };
 
+            var fs2 = File.AppendText(Path.Combine(outputPath, "logAsync_main.txt"));
+            fs2.WriteLine($"[{DateTime.Now}] Process started: {ScriptPath}");
+
             process.OutputDataReceived += Process_OutputDataReceived;
 
             process.Start();
+
+            fs2.Flush();
+            fs2.Dispose();
 
             State = ProcessState.Started;
             ProcessStarted?.Invoke(this, EventArgs.Empty);

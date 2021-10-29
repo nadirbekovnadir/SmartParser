@@ -68,9 +68,22 @@ namespace Models.Entities
             using (var reader = new StreamReader(path))
             using (var csv = new CsvReader(reader, _csvConf))
             {
-                entities = csv.GetRecords<NewsEntity>().ToList();
-            }
+                csv.Read();
+                csv.ReadHeader();
 
+                while (csv.Read())
+                {
+                    try
+                    {
+                        entities.Add(csv.GetRecord<NewsEntity>());
+                    }
+                    catch (Exception)
+                    {
+                        //Дописать обработку
+                        throw;
+                    }
+                }    
+            }
             return entities;
         }
 
