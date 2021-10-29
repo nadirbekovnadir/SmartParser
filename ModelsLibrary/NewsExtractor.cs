@@ -126,29 +126,18 @@ namespace Models
             {
                 State = ProcessState.Completed;
 
-                var fs = File.AppendText(Path.Combine(outputPath, "logAsync.txt"));
                 try
                 {
-                    
-
-                    fs.WriteLine($"[{DateTime.Now}] Process ended: {process.ExitCode}");
 
                     var pathFile = Directory.GetFiles(outputPath, "*.csv")[0];
-                    fs.WriteLine($"[{DateTime.Now}] File gotten");
 
-                    News = NewsEntity.LoadFromCsv(pathFile); ///
-                    fs.WriteLine($"[{DateTime.Now}] News read");
+                    News = NewsEntity.LoadFromCsv(pathFile);
 
                     File.Delete(pathFile);
-                    fs.WriteLine($"[{DateTime.Now}] File deleted");
-                    fs.Flush();
-                    fs.Dispose();
                 }
                 catch (Exception ex)
                 {
-                    fs.WriteLine($"[{DateTime.Now}] Process completed error: {ex.Message}");
-                    fs.Flush();
-                    fs.Dispose();
+
                 }
 
                 tcs.SetResult(process.ExitCode);
@@ -156,15 +145,9 @@ namespace Models
                 process.Dispose();
             };
 
-            var fs2 = File.AppendText(Path.Combine(outputPath, "logAsync_main.txt"));
-            fs2.WriteLine($"[{DateTime.Now}] Process started: {ScriptPath}");
-
             process.OutputDataReceived += Process_OutputDataReceived;
 
             process.Start();
-
-            fs2.Flush();
-            fs2.Dispose();
 
             State = ProcessState.Started;
             ProcessStarted?.Invoke(this, EventArgs.Empty);
