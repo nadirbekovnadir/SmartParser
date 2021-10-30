@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ParserApp.Services
 {
-    public class WordsProvider
+    public class WordsProvider : IWordsProvider
     {
         public List<string> Load(string path)
         {

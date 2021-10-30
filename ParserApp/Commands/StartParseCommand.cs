@@ -18,13 +18,13 @@ namespace ParserApp.Commands
         private readonly ParseParams _parse;
         private readonly NewsStore _newsStore;
 
-        private readonly NewsExtractor _dataExtractor;
+        private readonly INewsExtractor _dataExtractor;
         private readonly IRepository<NewsEntity> _repo;
 
         public StartParseCommand(
             ProcessesViewModel vm,
             NewsStore newsStore,
-            NewsExtractor dataExtractor,
+            INewsExtractor dataExtractor,
             IRepository<NewsEntity> repo,
             Action<Exception> onException)
             : base(onException)

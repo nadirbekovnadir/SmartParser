@@ -16,11 +16,11 @@ namespace ParserApp.Commands
         private AutoParams _autoParams;
         private IBaseCommand _startParseCommand;
         private IBaseCommand _startFindCommand;
-        private AutoExecutionCommandsService _autoExecutionService;
+        private IAutoExecutionCommandsService _autoExecutionService;
 
         public StartAutoCommand(
             ProcessesViewModel vm,
-            AutoExecutionCommandsService autoExecutionService) 
+            IAutoExecutionCommandsService autoExecutionService) 
         {
             _autoParams = vm.Auto;
             _startParseCommand = vm.StartParse;

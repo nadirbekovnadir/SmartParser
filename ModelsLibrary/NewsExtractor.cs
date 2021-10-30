@@ -7,7 +7,7 @@ using System.Windows;
 namespace Models
 {
 
-    public class NewsExtractor
+    public class NewsExtractor : INewsExtractor
     {
         public string ApplicationName { get; private set; }
         public string PythonPath { get; private set; }

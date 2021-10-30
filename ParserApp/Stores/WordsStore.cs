@@ -9,13 +9,13 @@ namespace ParserApp.Stores
 {
     public class WordsStore
     {
-        private readonly WordsProvider _provider;
+        private readonly IWordsProvider _provider;
 
         public List<string> Words { get; private set; }
 
         public event Action Updated;
 
-        public WordsStore(WordsProvider provider)
+        public WordsStore(IWordsProvider provider)
         {
             Words = new List<string>();
             _provider = provider;

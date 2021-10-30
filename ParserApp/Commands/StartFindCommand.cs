@@ -20,13 +20,13 @@ namespace ParserApp.Commands
 
         private readonly WordsStore _wordsStore;
         private readonly NewsStore _newsStore;
-        private readonly NewsFinder _dataFinder;
+        private readonly INewsFinder _dataFinder;
 
         public StartFindCommand(
             ProcessesViewModel vm,
             WordsStore wordsStore,
             NewsStore newsStore,
-            NewsFinder dataFinder,
+            INewsFinder dataFinder,
             Action<Exception> onException)
             : base(onException)
         {

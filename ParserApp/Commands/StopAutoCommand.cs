@@ -13,11 +13,11 @@ namespace ParserApp.Commands
     public class StopAutoCommand : BaseCommand
     {
         private AutoParams _autoParams;
-        private AutoExecutionCommandsService _autoExecutionService;
+        private IAutoExecutionCommandsService _autoExecutionService;
 
         public StopAutoCommand(
             ProcessesViewModel vm,
-            AutoExecutionCommandsService autoExecutionService)
+            IAutoExecutionCommandsService autoExecutionService)
         {
             _autoParams = vm.Auto;
             _autoExecutionService = autoExecutionService;

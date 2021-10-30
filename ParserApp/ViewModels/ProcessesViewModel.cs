@@ -84,10 +84,10 @@ namespace ParserApp.ViewModels
 
         #region Services
 
-        private readonly AutoExecutionCommandsService _autoExecutionCommandsService;
+        private readonly IAutoExecutionCommandsService _autoExecutionCommandsService;
         private readonly IDialogService _dialogService;
-        private readonly NewsExtractor _dataExtractor;
-        private readonly NewsFinder _dataFinder;
+        private readonly INewsExtractor _dataExtractor;
+        private readonly INewsFinder _dataFinder;
 
         #endregion
 
@@ -114,8 +114,12 @@ namespace ParserApp.ViewModels
             ProcessStateStore processStateStore,
             WordsStore wordsStore,
             NewsStore newsStore,
-            AutoExecutionCommandsService autoExecutionCommandsService,
+
+            IAutoExecutionCommandsService autoExecutionCommandsService,
             IDialogService dialogService,
+            INewsExtractor  newsExtractor,
+            INewsFinder newsFinder,
+
             IRepository<NewsEntity> newsRepo)
         {
             _processStateStore = processStateStore;
@@ -127,7 +131,8 @@ namespace ParserApp.ViewModels
 
             _newsRepo = newsRepo;
 
-            _dataExtractor = new NewsExtractor();
+            _dataExtractor = newsExtractor;
+            _dataFinder = newsFinder;
 
             _dataExtractor.LoadingStarted += OnLoadingStarted;
             _dataExtractor.SourceLoaded += OnSourceLoaded;
@@ -138,9 +143,6 @@ namespace ParserApp.ViewModels
             _dataExtractor.ParsingCompleted += OnParsingCompleted;
 
             _dataExtractor.ProcessCompleted += OnExtractingCompleted;
-
-
-            _dataFinder = new NewsFinder(new ParserService());
 
             _dataFinder.ProcessCompleted += OnFindingCompleted;
         }

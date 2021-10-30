@@ -9,7 +9,7 @@ using System.Windows.Input;
 
 namespace ParserApp.Services
 {
-    public class AutoExecutionCommandsService
+    public class AutoExecutionCommandsService : IAutoExecutionCommandsService
     {
         public bool IsRunning { get; set; } = false;
         private Timer _timer;

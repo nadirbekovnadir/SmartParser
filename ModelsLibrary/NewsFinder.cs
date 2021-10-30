@@ -3,7 +3,7 @@ using System.Text.RegularExpressions;
 
 namespace Models
 {
-    public class NewsFinder
+    public class NewsFinder : INewsFinder
     {
         private readonly IParserService _parserService;
 
