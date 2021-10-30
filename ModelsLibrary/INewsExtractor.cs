@@ -16,7 +16,24 @@ namespace Models
         event EventHandler<NewsExtractor.LoadedEventArgs>? SourceLoaded;
         event EventHandler<NewsExtractor.ParsedEventArgs>? SourceParsed;
 
-        int Start(string inputPath, string outputPath, int timeout = 15, bool with_rbk = false);
+        /// <summary>
+        /// Starts the process of news exctracting
+        /// </summary>
+        /// <param name="inputPath"></param>
+        /// <param name="timeout"></param>
+        /// <param name="with_rbk"></param>
+        /// <returns>Code of process</returns>
+        /// <exception cref="Exception">Thrown if process fails</exception>
+        int Start(string inputPath, int timeout = 15, bool with_rbk = false);
+        
+        /// <summary>
+        /// Starts the process of news exctracting asynchroniously
+        /// </summary>
+        /// <param name="inputPath"></param>
+        /// <param name="timeout"></param>
+        /// <param name="with_rbk"></param>
+        /// <returns>Code of process</returns>
+        /// <exception cref="Exception">Thrown if process fails</exception>
         Task<int> StartAsync(string inputPath, int timeout = 15, bool with_rbk = false);
     }
 }

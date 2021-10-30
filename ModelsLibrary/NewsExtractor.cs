@@ -158,7 +158,7 @@ namespace Models
         }
 
         public int Start(
-            string inputPath, string outputPath, int timeout = 15, bool with_rbk = false)
+            string inputPath, int timeout = 15, bool with_rbk = false)
         {
             throw new NotImplementedException();
             //return 0;

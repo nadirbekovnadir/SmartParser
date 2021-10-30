@@ -10,6 +10,7 @@ using System.IO;
 using Models.Entities;
 using Models.Repositories;
 using ParserApp.Services;
+using Microsoft.Extensions.Logging;
 
 namespace ParserApp.ViewModels
 {
@@ -88,6 +89,7 @@ namespace ParserApp.ViewModels
         private readonly IDialogService _dialogService;
         private readonly INewsExtractor _dataExtractor;
         private readonly INewsFinder _dataFinder;
+        private readonly ILogger _logger;
 
         #endregion
 
@@ -118,9 +120,12 @@ namespace ParserApp.ViewModels
             IAutoExecutionCommandsService autoExecutionCommandsService,
             IDialogService dialogService,
             INewsExtractor  newsExtractor,
-            INewsFinder newsFinder,
 
-            IRepository<NewsEntity> newsRepo)
+            INewsFinder newsFinder,
+            ILogger<ProcessesViewModel> logger,
+
+            IRepository<NewsEntity> newsRepo
+            )
         {
             _processStateStore = processStateStore;
             _wordsStore = wordsStore;
@@ -128,12 +133,18 @@ namespace ParserApp.ViewModels
 
             _autoExecutionCommandsService = autoExecutionCommandsService;
             _dialogService = dialogService;
-
-            _newsRepo = newsRepo;
+            _logger = logger;
 
             _dataExtractor = newsExtractor;
             _dataFinder = newsFinder;
 
+            _newsRepo = newsRepo;
+
+            EventsSubscribe();
+        }
+
+        private void EventsSubscribe()
+        {
             _dataExtractor.LoadingStarted += OnLoadingStarted;
             _dataExtractor.SourceLoaded += OnSourceLoaded;
             _dataExtractor.LoadingCompleted += OnLoadingCompleted;
