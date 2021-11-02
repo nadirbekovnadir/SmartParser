@@ -2,27 +2,22 @@ import os
 import sys
 import datetime
 
-import pandas as pd
-
-import csv
 import json
-
-#import nest_asyncio
 
 import warnings
 
-from pandas.core.base import NoNewAttributesMixin
+#import nest_asyncio
 
 from DataExtractor import DataExtractor
 
 
 def main():
 
-    sites_file = r'C:\Users\Nadir\Documents\Parser_data\sites_test.txt'
-    output_path = r'.'
+    sites_file = r'C:\Users\Nadir\Documents\Data\parser\sites_small.txt'
+    output_path = r'C:\Users\Nadir\Documents\Data\parser'
     timeout = 15
 
-    with_rbk = False
+    with_rbk = True
 
     # Parse args 
     # TODO: create common func

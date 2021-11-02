@@ -78,19 +78,27 @@ class DataExtractor:
         get_results = []
         tasks = []
 
+        if self._with_rbk:
+            links_length += 1
+
         print(f'!Loading[{links_length}]', flush=True)
         for name, url in urls.items():
             task = asyncio.ensure_future(self._async_get(name, url))
             tasks.append(task)
 
+
         get_results = await asyncio.gather(*tasks)
         errors_links = [link for i, link in enumerate(links) if get_results[i] == None]
 
+        if self._with_rbk:
+            task = asyncio.ensure_future(self._async_get(rbc_parser.get_name(), rbc_parser.get_link()))
+
+            rbc_result = await task
+            if rbc_result == None:
+                errors_links.append(rbc_parser.get_link())
+
         print(f'!Completed[{links_length - len(errors_links)}]')
 
-
-        if self._with_rbk:
-            links_length += 1
 
         print(f'!Parsing[{links_length - len(errors_links)}]', flush=True)
         n_sites = 0
@@ -111,19 +119,20 @@ class DataExtractor:
             except:
                 print(f'Broken[{names[i]}][0]', flush=True)
 
-        if self._with_rbk:
+        if self._with_rbk and rbc_result != None:
 
             try:
-                single_df = self._single_parse(rbc_parser, 'RBC', '')
+                single_df = self._single_parse(rbc_parser, rbc_parser.get_name(), rbc_result)
                 dfs.append(single_df)
 
-                missed_cols = single_df.columns[single_df[single_df['Name'] == names[i]].isna().any()]
+                missed_cols = single_df.columns[single_df[single_df['Name'] == rbc_parser.get_name()].isna().any()]
                 missed_cols = missed_cols.tolist()
                 entries_count = len(single_df)
 
                 print(f'Parsed[RBC][{entries_count}]:{missed_cols}', flush=True)
                 n_sites += 1
-            except:
+            except Exception as e:
+                #print(str(e))
                 print(f'Broken[RBC][0]', flush=True)
 
         

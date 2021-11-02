@@ -11,7 +11,7 @@
     <OutputPath>.</OutputPath>
     <Name>ParserLib</Name>
     <RootNamespace>ParserLib</RootNamespace>
-    <InterpreterId>Global|VisualStudio|parser_venv</InterpreterId>
+    <InterpreterId>MSBuild|parser_venv|$(MSBuildProjectFullPath)</InterpreterId>
     <IsWindowsApplication>False</IsWindowsApplication>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
@@ -37,7 +37,15 @@
     <Content Include="requirements.txt" />
   </ItemGroup>
   <ItemGroup>
-    <InterpreterReference Include="Global|VisualStudio|parser_venv" />
+    <Interpreter Include="parser_venv\">
+      <Id>parser_venv</Id>
+      <Version>3.9</Version>
+      <Description>parser_venv (Python 3.9 (64-bit))</Description>
+      <InterpreterPath>Scripts\python.exe</InterpreterPath>
+      <WindowsInterpreterPath>Scripts\pythonw.exe</WindowsInterpreterPath>
+      <PathEnvironmentVariable>PYTHONPATH</PathEnvironmentVariable>
+      <Architecture>X64</Architecture>
+    </Interpreter>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in
