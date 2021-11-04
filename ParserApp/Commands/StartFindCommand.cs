@@ -99,7 +99,7 @@ namespace ParserApp.Commands
 
                     if (lastFile is not null)
 					{
-                        NewsEntity.AppendToExcel(entities, lastFile.FullName, sheetes);
+                         NewsEntity.AppendToExcel(entities, lastFile.FullName, sheetes);
 
                         return;
                     }

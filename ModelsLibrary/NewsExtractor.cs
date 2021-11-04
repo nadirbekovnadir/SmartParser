@@ -105,8 +105,15 @@ namespace Models
             string outputPath = Path.Combine(
                 Directory.GetCurrentDirectory(), "temp");
 
+
             if (!Directory.Exists(outputPath))
                 Directory.CreateDirectory(outputPath);
+			else
+			{
+                var di = new DirectoryInfo(outputPath);
+                foreach (var file in di.EnumerateFiles())
+                    file.Delete();
+            }
 
             ProcessInfo.Arguments =
                 $"\"{ScriptPath}\" " +
@@ -125,22 +132,24 @@ namespace Models
             process.Exited += (s, e) =>
             {
                 State = ProcessState.Completed;
-                string pathFile = string.Empty;
+                FileInfo? file = null;
 
                 try
                 {
-                    pathFile = Directory.GetFiles(outputPath, "*.csv")[0];
-                    News = NewsEntity.LoadFromCsv(pathFile);
+                    file = (from f in new DirectoryInfo(outputPath).EnumerateFiles()
+                                orderby f.CreationTime descending
+                                select f)
+                                .FirstOrDefault();
+
+                    if (file != null)
+                        News = NewsEntity.LoadFromCsv(file.FullName);
                 }
                 catch (Exception ex)
                 {
                     
                 }
-                finally
-				{
-                    if (pathFile != string.Empty)
-                        File.Delete(pathFile);
-                }
+
+                file?.Delete();
 
                 tcs.SetResult(process.ExitCode);
                 ProcessCompleted?.Invoke(this, new CompletedEventArgs { ExitCode = process.ExitCode });
