@@ -125,19 +125,21 @@ namespace Models
             process.Exited += (s, e) =>
             {
                 State = ProcessState.Completed;
+                string pathFile = string.Empty;
 
                 try
                 {
-
-                    var pathFile = Directory.GetFiles(outputPath, "*.csv")[0];
-
+                    pathFile = Directory.GetFiles(outputPath, "*.csv")[0];
                     News = NewsEntity.LoadFromCsv(pathFile);
-
-                    File.Delete(pathFile);
                 }
                 catch (Exception ex)
                 {
-
+                    
+                }
+                finally
+				{
+                    if (pathFile != string.Empty)
+                        File.Delete(pathFile);
                 }
 
                 tcs.SetResult(process.ExitCode);

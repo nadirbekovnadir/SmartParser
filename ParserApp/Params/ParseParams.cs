@@ -41,7 +41,7 @@ namespace ParserApp.Params
             }
         }
 
-        private bool _saveAll = true;
+        private bool _saveAll = false;
         public bool SaveAll
         {
             get => _saveAll;

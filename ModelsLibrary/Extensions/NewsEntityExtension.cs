@@ -1,6 +1,7 @@
 ﻿using CsvHelper;
 using CsvHelper.Configuration;
 using Ganss.Excel;
+using Npoi.Mapper;
 using System.Globalization;
 using System.Text.RegularExpressions;
 
@@ -80,7 +81,7 @@ namespace Models.Entities
                     catch (Exception)
                     {
                         //Дописать обработку
-                        throw;
+                        //throw;
                     }
                 }    
             }
@@ -108,5 +109,18 @@ namespace Models.Entities
         {
             excelMapper.Save(path, entities, sheetName);
         }
+        
+        public static void AppendToExcel(List<List<NewsEntity>> entities, string path, List<string> sheetNames)
+		{
+            var mapper = new Mapper(path);
+
+            for (int i = 0; i < sheetNames.Count; i++)
+            {
+                mapper.Put(entities[i], sheetNames[i], false);
+            }
+
+            mapper.Save(path);
+        }
+
     }
 }

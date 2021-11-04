@@ -19,7 +19,7 @@ namespace Models.Entities
         public string Description { get; set; } = "";
         public string Link { get; set; } = "";
 
-        [Format(@"yyyy-MM-dd HH:mm:ss")]
+        //[Format(@"yyyy-MM-dd HH:mm:ss")]
         public DateTime? Date {  get; set; } = DateTime.Now;
 
         public NewsEntity()

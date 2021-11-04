@@ -48,7 +48,7 @@ namespace ParserApp.Commands
 
             foreach (var pattern in patterns)
             {
-                await _dataFinder.StartAsync(_newsStore.ParsedNew, pattern); // Создать store для всех слов, которые используются
+                await _dataFinder.StartAsync(_newsStore.ParsedNew, pattern);
                 findedNew.Add(_dataFinder.News); // такое получение данных надо будет отрефакторить
                 await _dataFinder.StartAsync(_newsStore.ParsedAll, pattern);
                 findedAll.Add(_dataFinder.News);
@@ -64,7 +64,7 @@ namespace ParserApp.Commands
             if (!Directory.Exists(dir))
                 Directory.CreateDirectory(dir);
 
-            if (_find.SaveAll)
+            if (_find.SaveAll && _newsStore.FindedAll.Count != 0)
             {
                 var sheetes = new List<string>();
                 var entities = new List<List<NewsEntity>>();
@@ -78,7 +78,7 @@ namespace ParserApp.Commands
                 NewsEntity.SaveToExcel(entities, dir, "All_" + timestamp, sheetes);
             }
 
-            if (_find.SaveNew)
+            if (_find.SaveNew && _newsStore.FindedNew.SelectMany(o => o).Any())
             {
                 var sheetes = new List<string>();
                 var entities = new List<List<NewsEntity>>();
@@ -87,6 +87,22 @@ namespace ParserApp.Commands
                 {
                     sheetes.Add($"Finded_{i}");
                     entities.Add(_newsStore.FindedNew[i].ConvertAll(news => new NewsEntity(news)));
+                }
+
+                if (_find.AccumulateNew)
+				{
+                    var directiryInfo = new DirectoryInfo(dir);
+                    var lastFile = (from f in directiryInfo.EnumerateFiles()
+                                    orderby f.CreationTime descending
+                                    select f)
+                                    .FirstOrDefault();
+
+                    if (lastFile is not null)
+					{
+                        NewsEntity.AppendToExcel(entities, lastFile.FullName, sheetes);
+
+                        return;
+                    }
                 }
 
                 NewsEntity.SaveToExcel(entities, dir, "New_" + timestamp, sheetes);

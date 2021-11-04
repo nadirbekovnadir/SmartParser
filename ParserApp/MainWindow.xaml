@@ -40,8 +40,10 @@
                     <Separator Margin="0,0,0,4" Height="6" VerticalAlignment="Bottom" Grid.Row="0"/>
 
                     <Label Content="Find" HorizontalContentAlignment="Center" FontSize="16" Margin="10,10,10,0" VerticalAlignment="Top" Grid.Row="1"/>
-                    <CheckBox Content="Save new" Margin="10,0,10,85" Grid.Row="1"
+                    <CheckBox Content="Save new" Margin="10,0,10,112" Grid.Row="1"
                               IsChecked="{Binding Find.SaveNew, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="15" VerticalAlignment="Bottom"/>
+                    <CheckBox Content="Accum new" Margin="10,0,10,91" Grid.Row="1"
+                              IsChecked="{Binding Find.AccumulateNew, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="15" VerticalAlignment="Bottom"/>
                     <CheckBox Content="Save all" Margin="10,0,10,65" Height="15" VerticalAlignment="Bottom" Grid.Row="1"
                               IsChecked="{Binding Find.SaveAll, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                     <Button Content="Start" Margin="10,0,10,40" Height="20" VerticalAlignment="Bottom" Grid.Row="1"

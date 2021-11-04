@@ -15,11 +15,26 @@ namespace ParserApp.Params
             set
             {
                 _saveNew = value;
+
+                if (!_saveNew && AccumulateNew)
+                    AccumulateNew = false;
+
                 OnPropertyChanged(nameof(SaveNew));
             }
         }
 
-        private bool _saveAll = true;
+        private bool _accumulateNew = false;
+        public bool AccumulateNew
+        {
+            get => _accumulateNew;
+            set
+            {
+                _accumulateNew = value;
+                OnPropertyChanged(nameof(AccumulateNew));
+            }
+        }
+
+        private bool _saveAll = false;
         public bool SaveAll
         {
             get => _saveAll;

@@ -48,7 +48,6 @@ namespace ParserApp.Commands
             _newsStore.ParsedNew = NewsEntity.Except(_dataExtractor.News, _newsStore.ParsedAll);
             _newsStore.ParsedAll = _dataExtractor.News;
 
-
             string timestamp = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
             string dir = Path.Combine(_pathes.Output, "Parsed");
 
@@ -58,14 +57,14 @@ namespace ParserApp.Commands
             var sheetes = new List<string>();
             var entities = new List<List<NewsEntity>>(); 
 
-            if (_parse.SaveAll)
+            if (_parse.SaveAll && _newsStore.ParsedAll.Count != 0)
             {
                 sheetes.Add("All");
                 entities.Add(_newsStore.ParsedAll.ConvertAll(news => new NewsEntity(news)));
             }
 
 
-            if (_parse.SaveNew)
+            if (_parse.SaveNew && _newsStore.ParsedNew.Count != 0)
             {
                 sheetes.Add("New");
                 entities.Add(_newsStore.ParsedNew.ConvertAll(news => new NewsEntity(news)));

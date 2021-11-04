@@ -24,6 +24,7 @@
   <ItemGroup>
     <PackageReference Include="CsvHelper" Version="27.1.1" />
     <PackageReference Include="ExcelMapper" Version="5.2.328" />
+    <PackageReference Include="Npoi.Mapper" Version="3.5.1" />
   </ItemGroup>
 
 </Project>
