@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.Win32;
+using SmartParser.MVVM.Services.Common;
 using System.Windows;
-using Microsoft.Win32;
-using ParserApp.Interfaces;
 
-namespace ParserApp.Services
+namespace SmartParser.MVVM.Services
 {
-    public class DefaultDialogService : IDialogService
+	public class DefaultDialogService : IDialogService
     {
         public void ShowMessage(string message)
         {

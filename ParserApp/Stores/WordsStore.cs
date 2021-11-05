@@ -1,13 +1,11 @@
-﻿using System;
+﻿using SmartParser.MVVM.Services.Common;
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using ParserApp.Services;
 
-namespace ParserApp.Stores
+namespace SmartParser.MVVM.Stores
 {
-    public class WordsStore
+	public class WordsStore
     {
         private readonly IWordsProvider _provider;
 

@@ -1,24 +1,22 @@
-﻿using ParserApp.Params;
-using ParserApp.Services;
-using ParserApp.ViewModels;
+﻿using SmartParser.MVVM.Commands.Common;
+using SmartParser.MVVM.Services.Common;
+using SmartParser.MVVM.ViewModels;
+using SmartParser.MVVM.ViewModels.Parameters;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace ParserApp.Commands
+namespace SmartParser.MVVM.Commands
 {
-    public class StartAutoCommand : BaseCommand
+	public class StartAutoCommand : BaseCommand
     {
         private AutoParams _autoParams;
         private IBaseCommand _startParseCommand;
         private IBaseCommand _startFindCommand;
         private IAutoExecutionCommandsService _autoExecutionService;
 
-        public StartAutoCommand(
+		public StartAutoCommand(
             ProcessesViewModel vm,
             IAutoExecutionCommandsService autoExecutionService) 
         {

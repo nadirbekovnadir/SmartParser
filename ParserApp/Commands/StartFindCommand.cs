@@ -1,19 +1,18 @@
-﻿using Models;
-using Models.Entities;
-using Models.Repositories;
-using ParserApp.Params;
-using ParserApp.Stores;
-using ParserApp.ViewModels;
+﻿using SmartParser.Domain.Entities;
+using SmartParser.Domain.Services.Common;
+using SmartParser.MVVM.Commands.Common;
+using SmartParser.MVVM.Stores;
+using SmartParser.MVVM.ViewModels;
+using SmartParser.MVVM.ViewModels.Parameters;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace ParserApp.Commands
+namespace SmartParser.MVVM.Commands
 {
-    public class StartFindCommand : AsyncBaseCommand
+	public class StartFindCommand : AsyncBaseCommand
     {
         private readonly PathesParams _pathes;
         private readonly FindParams _find;

@@ -1,18 +1,19 @@
-﻿using ParserApp.Params;
-using ParserApp.Interfaces;
-using System.IO;
+﻿using SmartParser.MVVM.Commands.Common;
+using SmartParser.MVVM.Services.Common;
+using SmartParser.MVVM.ViewModels;
+using SmartParser.MVVM.ViewModels.Parameters;
 
-namespace ParserApp.Commands
+namespace SmartParser.MVVM.Commands
 {
-    public class OpenSitesFileCommand : BaseCommand
+	public class OpenSitesFileCommand : BaseCommand
     {
         PathesParams _pathes;
         IDialogService _dialogService;
 
         public OpenSitesFileCommand(
-            PathesParams pathes, IDialogService dialogService)
+            ProcessesViewModel vm, IDialogService dialogService)
         {
-            _pathes = pathes;
+            _pathes = vm.Pathes;
             _dialogService = dialogService;
         }
 

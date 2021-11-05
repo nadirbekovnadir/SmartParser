@@ -1,16 +1,12 @@
-﻿using ParserApp.Params;
-using ParserApp.Services;
-using ParserApp.ViewModels;
-using System;
-using System.Collections.Generic;
+﻿using SmartParser.MVVM.Commands.Common;
+using SmartParser.MVVM.Services.Common;
+using SmartParser.MVVM.ViewModels;
+using SmartParser.MVVM.ViewModels.Parameters;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace ParserApp.Commands
+namespace SmartParser.MVVM.Commands
 {
-    public class StopAutoCommand : BaseCommand
+	public class StopAutoCommand : BaseCommand
     {
         private AutoParams _autoParams;
         private IAutoExecutionCommandsService _autoExecutionService;

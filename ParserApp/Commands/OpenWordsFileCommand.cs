@@ -1,9 +1,10 @@
-﻿using ParserApp.Params;
-using ParserApp.Interfaces;
-using ParserApp.Stores;
-using System.IO;
+﻿using SmartParser.MVVM.Commands.Common;
+using SmartParser.MVVM.Services.Common;
+using SmartParser.MVVM.Stores;
+using SmartParser.MVVM.ViewModels.Parameters;
+using SmartParser.MVVM.ViewModels;
 
-namespace ParserApp.Commands
+namespace SmartParser.MVVM.Commands
 {
     public class OpenWordsFileCommand : BaseCommand
     {
@@ -12,11 +13,11 @@ namespace ParserApp.Commands
         IDialogService _dialogService;
 
         public OpenWordsFileCommand(
-            PathesParams pathes,
+            ProcessesViewModel vm,
             WordsStore wordsStore,
             IDialogService dialogService)
         {
-            _pathes = pathes;
+            _pathes = vm.Pathes;
             _wordsStore = wordsStore;
             _dialogService = dialogService;
         }

@@ -1,13 +1,9 @@
-﻿using Models.Entities;
+﻿using SmartParser.Domain.Entities;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace ParserApp.Stores
+namespace SmartParser.MVVM.Stores
 {
-    public class ProcessStateStore
+	public class ProcessStateStore
     {
         public event Action<int> LoadingStarted;
         public event Action<NewsSources?, bool> SourceLoaded;

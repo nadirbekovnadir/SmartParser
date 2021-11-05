@@ -1,20 +1,18 @@
-﻿using ParserApp.Params;
-using ParserApp.Commands;
-using ParserApp.Interfaces;
-using Models;
-using System.ComponentModel;
-using System.Windows.Input;
-using ParserApp.Stores;
-using System;
-using System.IO;
-using Models.Entities;
-using Models.Repositories;
-using ParserApp.Services;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
+using SmartParser.Database.Repositories.Common;
+using SmartParser.Domain.Entities;
+using SmartParser.Domain.Services;
+using SmartParser.Domain.Services.Common;
+using SmartParser.MVVM.Commands;
+using SmartParser.MVVM.Commands.Common;
+using SmartParser.MVVM.Services.Common;
+using SmartParser.MVVM.Stores;
+using SmartParser.MVVM.ViewModels.Common;
+using SmartParser.MVVM.ViewModels.Parameters;
 
-namespace ParserApp.ViewModels
+namespace SmartParser.MVVM.ViewModels
 {
-    public class ProcessesViewModel : BaseViewModel
+	public class ProcessesViewModel : BaseViewModel
     {
         #region Binded params
 
@@ -214,7 +212,9 @@ namespace ParserApp.ViewModels
         {
             get
             {
-                _openSitesFile ??= new OpenSitesFileCommand(Pathes, _dialogService);
+                _openSitesFile ??= new OpenSitesFileCommand(
+                    this,
+                    _dialogService);
                 return _openSitesFile;
             }
         }
@@ -225,7 +225,7 @@ namespace ParserApp.ViewModels
             get
             {
                 _openWordsFile ??= new OpenWordsFileCommand(
-                    Pathes,
+                    this,
                     _wordsStore,
                     _dialogService);
                 return _openWordsFile;
@@ -237,7 +237,9 @@ namespace ParserApp.ViewModels
         {
             get
             {
-                _openOutputDirectory ??= new OpenOutputDirectoryCommand(Pathes, _dialogService);
+                _openOutputDirectory ??= new OpenOutputDirectoryCommand(
+                    this, 
+                    _dialogService);
                 return _openOutputDirectory;
             }
         }

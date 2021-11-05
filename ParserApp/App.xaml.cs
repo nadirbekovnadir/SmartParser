@@ -1,22 +1,28 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Models;
-using Models.Entities;
-using Models.Repositories;
-using ParserApp.Interfaces;
-using ParserApp.Services;
-using ParserApp.Stores;
-using ParserApp.ViewModels;
 using Serilog;
+using SmartParser.Database.Contexts;
+using SmartParser.Database.Contexts.Common;
+using SmartParser.Database.Repositories;
+using SmartParser.Database.Repositories.Common;
+using SmartParser.Domain.Entities;
+using SmartParser.Domain.Services;
+using SmartParser.Domain.Services.Common;
+using SmartParser.MVVM.Services;
+using SmartParser.MVVM.Services.Common;
+using SmartParser.MVVM.Stores;
+using SmartParser.MVVM.ViewModels;
+using System;
 using System.Windows;
+using SmartParser.MVVM.Commands;
+using SmartParser.MVVM.Commands.Common;
 
 namespace ParserApp
 {
-    /// <summary>
-    /// Interaction logic for App.xaml
-    /// </summary>
-    public partial class App : Application
+	/// <summary>
+	/// Interaction logic for App.xaml
+	/// </summary>
+	public partial class App : Application
     {
         private IHost _host;
 
@@ -36,6 +42,7 @@ namespace ParserApp
                     AddServices(services);
                     AddStores(services);
                     AddViewModels(services);
+                    //AddCommands(services);
 
                     services.AddSingleton(s => new MainWindow()
                     {
@@ -46,10 +53,15 @@ namespace ParserApp
                 .Build();
         }
 
+		//private void AddCommands(IServiceCollection services)
+		//{
+  //          services.AddSingleton<OpenOutputDirectoryCommand>();
+		//}
 
-        #region HostBuilder methods
 
-        private static void AddViewModels(IServiceCollection services)
+		#region HostBuilder methods
+
+		private static void AddViewModels(IServiceCollection services)
         {
             services.AddSingleton<ProcessesViewModel>();
             services.AddSingleton<LogViewModel>();

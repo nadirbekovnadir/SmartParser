@@ -1,18 +1,6 @@
-﻿using CsvHelper;
-using CsvHelper.Configuration;
-using CsvHelper.Configuration.Attributes;
-using CsvHelper.TypeConversion;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Models.Entities
+﻿namespace SmartParser.Domain.Entities
 {
-    public partial class NewsEntity : IEquatable<NewsEntity>
+	public partial class NewsEntity : IEquatable<NewsEntity>
     {
         public string Name { get; set; } = "";
         public string Title { get; set; } = "";

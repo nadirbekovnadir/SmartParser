@@ -1,4 +1,6 @@
-﻿namespace ParserApp.ViewModels
+﻿using SmartParser.MVVM.ViewModels.Common;
+
+namespace SmartParser.MVVM.ViewModels
 {
 
     public class MainViewModel : BaseViewModel

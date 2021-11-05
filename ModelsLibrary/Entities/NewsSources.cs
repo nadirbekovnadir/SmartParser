@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Models.Entities
+﻿namespace SmartParser.Domain.Entities
 {
-    public class NewsSources
+	public class NewsSources
     {
         private string name = string.Empty;
         private string url = string.Empty;

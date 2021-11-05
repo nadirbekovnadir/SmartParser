@@ -1,15 +1,14 @@
-﻿using ParserApp.Commands;
+﻿using SmartParser.MVVM.Commands.Common;
+using SmartParser.MVVM.Services.Common;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace ParserApp.Services
+namespace SmartParser.MVVM.Services
 {
-    public class AutoExecutionCommandsService : IAutoExecutionCommandsService
+	public class AutoExecutionCommandsService : IAutoExecutionCommandsService
     {
         public bool IsRunning { get; set; } = false;
         private Timer _timer;

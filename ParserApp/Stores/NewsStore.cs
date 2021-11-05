@@ -1,13 +1,10 @@
-﻿using Models.Entities;
+﻿using SmartParser.Domain.Entities;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace ParserApp.Stores
+namespace SmartParser.MVVM.Stores
 {
-    public class NewsStore
+	public class NewsStore
     {
         public event Action FindedChanged;
         public event Action ParsedChanged;

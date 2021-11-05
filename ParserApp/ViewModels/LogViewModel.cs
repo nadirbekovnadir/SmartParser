@@ -1,13 +1,14 @@
-﻿using Models.Entities;
-using ParserApp.Stores;
+﻿using SmartParser.Domain.Entities;
+using SmartParser.MVVM.Stores;
+using SmartParser.MVVM.ViewModels.Common;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Windows;
 using System.Windows.Threading;
 
-namespace ParserApp.ViewModels
+namespace SmartParser.MVVM.ViewModels
 {
-    public class LogViewModel : BaseViewModel
+	public class LogViewModel : BaseViewModel
     {
         #region Bindings
 

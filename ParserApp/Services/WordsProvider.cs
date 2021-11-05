@@ -1,13 +1,12 @@
-﻿using System;
+﻿using SmartParser.MVVM.Services.Common;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace ParserApp.Services
+namespace SmartParser.MVVM.Services
 {
-    public class WordsProvider : IWordsProvider
+	public class WordsProvider : IWordsProvider
     {
         public List<string> Load(string path)
         {
