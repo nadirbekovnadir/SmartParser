@@ -1,4 +1,5 @@
-﻿using SmartParser.Domain.Entities;
+﻿using Microsoft.Extensions.Logging;
+using SmartParser.Domain.Entities;
 using SmartParser.MVVM.Stores;
 using SmartParser.MVVM.ViewModels.Common;
 using System.Collections.ObjectModel;
@@ -62,14 +63,19 @@ namespace SmartParser.MVVM.ViewModels
 
         private ProcessStateStore _processStateStore;
         private Dispatcher _dispatcher;
+        private ILogger<LogViewModel> _logger;
 
-        public LogViewModel(ProcessStateStore processStateStore)
+        public LogViewModel(
+            ProcessStateStore processStateStore,
+            ILogger<LogViewModel> logger)
         {
             _processStateStore = processStateStore;
             _dispatcher = Application.Current.Dispatcher;
 
             LogStrings = new ObservableCollection<string>();
             LogStrings.CollectionChanged += OnLogStringChanged;
+
+            _logger = logger;
 
             _processStateStore.LoadingStarted += OnLoadingStarted;
             _processStateStore.SourceLoaded += OnSourceLoaded;

@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using SmartParser.Database.Repositories.Common;
 using SmartParser.Domain.Entities;
 using SmartParser.Domain.Services;
@@ -9,78 +10,12 @@ using SmartParser.MVVM.Services.Common;
 using SmartParser.MVVM.Stores;
 using SmartParser.MVVM.ViewModels.Common;
 using SmartParser.MVVM.ViewModels.Parameters;
+using System;
 
 namespace SmartParser.MVVM.ViewModels
 {
 	public class ProcessesViewModel : BaseViewModel
     {
-        #region Binded params
-
-        private PathesParams _pathes;
-        public PathesParams Pathes
-        {
-            get
-            {
-                _pathes ??= new PathesParams();
-                return _pathes;
-            }
-            set
-            {
-                _pathes = value;
-                OnPropertyChanged(nameof(Pathes));
-            }
-        }
-
-
-        private ParseParams _parse;
-        public ParseParams Parse
-        {
-            get
-            {
-                _parse ??= new ParseParams();
-                return _parse;
-            }
-            set
-            {
-                _parse = value;
-                OnPropertyChanged(nameof(Parse));
-            }
-        }
-        
-        private FindParams _find;
-        public FindParams Find
-        {
-            get
-            {
-                _find ??= new FindParams();
-                return _find;
-            }
-            set
-            {
-                _find = value;
-                OnPropertyChanged(nameof(Find));
-            }
-        }
-
-        private AutoParams _auto;
-
-        public AutoParams Auto
-        {
-            get 
-            {
-                _auto ??= new AutoParams();
-                return _auto; 
-            }
-            set 
-            {
-                _auto = value; 
-            }
-        }
-
-
-        #endregion
-
-
         #region Services
 
         private readonly IAutoExecutionCommandsService _autoExecutionCommandsService;
@@ -108,6 +43,69 @@ namespace SmartParser.MVVM.ViewModels
         #endregion
 
 
+        #region Binded params
+
+        private PathesParams _pathes;
+        public PathesParams Pathes
+        {
+            get => _pathes;
+            set
+            {
+                _pathes = value;
+                OnPropertyChanged(nameof(Pathes));
+            }
+        }
+
+
+        private ParseParams _parse;
+        public ParseParams Parse
+        {
+            get => _parse;
+            set
+            {
+                _parse = value;
+                OnPropertyChanged(nameof(Parse));
+            }
+        }
+
+        private FindParams _find;
+        public FindParams Find
+        {
+            get => _find;
+            set
+            {
+                _find = value;
+                OnPropertyChanged(nameof(Find));
+            }
+        }
+
+        private AutoParams _auto;
+        public AutoParams Auto
+        {
+            get => _auto;
+            set
+            {
+                _auto = value;
+                OnPropertyChanged(nameof(Auto));
+            }
+        }
+
+        #endregion
+
+
+        #region Commands
+
+        public IBaseCommand OpenSitesFile { get; }
+        public IBaseCommand OpenWordsFile { get; }
+        public IBaseCommand OpenOutputDirectory { get; }
+        public IBaseCommand StartParse { get; }
+        public IBaseCommand StartFind { get; }
+        public IBaseCommand StartAuto { get; }
+        public IBaseCommand StopAuto { get; }
+
+        #endregion
+
+
         #region Constructor
 
         public ProcessesViewModel(
@@ -117,12 +115,14 @@ namespace SmartParser.MVVM.ViewModels
 
             IAutoExecutionCommandsService autoExecutionCommandsService,
             IDialogService dialogService,
-            INewsExtractor  newsExtractor,
+            INewsExtractor newsExtractor,
 
             INewsFinder newsFinder,
-            ILogger<ProcessesViewModel> logger,
 
-            IRepository<NewsEntity> newsRepo
+            IRepository<NewsEntity> newsRepo,
+
+            ILogger<ProcessesViewModel> logger,
+            IServiceProvider loggerServices
             )
         {
             _processStateStore = processStateStore;
@@ -131,12 +131,36 @@ namespace SmartParser.MVVM.ViewModels
 
             _autoExecutionCommandsService = autoExecutionCommandsService;
             _dialogService = dialogService;
-            _logger = logger;
 
             _dataExtractor = newsExtractor;
             _dataFinder = newsFinder;
 
             _newsRepo = newsRepo;
+
+            _logger = logger;
+
+
+            Pathes = new PathesParams();
+            Parse = new ParseParams();
+            Find = new FindParams();
+            Auto = new AutoParams();
+
+
+            OpenSitesFile = new OpenSitesFileCommand(
+                this, logger, dialogService);
+            OpenWordsFile = new OpenWordsFileCommand(
+                this, logger, wordsStore, dialogService);
+            OpenOutputDirectory = new OpenOutputDirectoryCommand(
+                this, logger, dialogService);
+
+            StartParse = new StartParseCommand(
+                this, logger, newsStore, newsExtractor, newsRepo);
+            StartFind = new StartFindCommand(
+                this, logger, wordsStore, newsStore, newsFinder);
+            StartAuto = new StartAutoCommand(
+                this, logger, autoExecutionCommandsService);
+            StopAuto = new StopAutoCommand(
+                this, logger, autoExecutionCommandsService);
 
             EventsSubscribe();
         }
@@ -154,6 +178,15 @@ namespace SmartParser.MVVM.ViewModels
             _dataExtractor.ProcessCompleted += OnExtractingCompleted;
 
             _dataFinder.ProcessCompleted += OnFindingCompleted;
+
+            OpenSitesFile.OnException += onCommandException;
+            OpenWordsFile.OnException += onCommandException;
+            OpenOutputDirectory.OnException += onCommandException;
+
+            StartParse.OnException += onCommandException;
+            StartFind.OnException += onCommandException;
+            StartAuto.OnException += onCommandException;
+            StopAuto.OnException += onCommandException;
         }
 
         #endregion
@@ -196,107 +229,15 @@ namespace SmartParser.MVVM.ViewModels
             
         }
 
-
         private void OnFindingCompleted(object? sender, CompletedEventArgs e)
         {
             
         }
 
-        #endregion
-
-
-        #region Commands
-
-        private IBaseCommand _openSitesFile;
-        public IBaseCommand OpenSitesFile
+        private void onCommandException(Object? sender, Exception e)
         {
-            get
-            {
-                _openSitesFile ??= new OpenSitesFileCommand(
-                    this,
-                    _dialogService);
-                return _openSitesFile;
-            }
-        }
-
-        private IBaseCommand _openWordsFile;
-        public IBaseCommand OpenWordsFile
-        {
-            get
-            {
-                _openWordsFile ??= new OpenWordsFileCommand(
-                    this,
-                    _wordsStore,
-                    _dialogService);
-                return _openWordsFile;
-            }
-        }
-
-        private IBaseCommand _openOutputDirectory;
-        public IBaseCommand OpenOutputDirectory
-        {
-            get
-            {
-                _openOutputDirectory ??= new OpenOutputDirectoryCommand(
-                    this, 
-                    _dialogService);
-                return _openOutputDirectory;
-            }
-        }
-
-        private IBaseCommand _startParse;
-        public IBaseCommand StartParse
-        {
-            get
-            {
-                _startParse ??= new StartParseCommand(
-                    this,
-                    _newsStore,
-                    _dataExtractor,
-                    _newsRepo,
-                    (ex) => { });
-                return _startParse;
-            }
-        }
-
-        
-        private IBaseCommand _startFind;
-        public IBaseCommand StartFind
-        {
-            get
-            {
-                _startFind ??= new StartFindCommand(
-                    this,
-                    _wordsStore,
-                    _newsStore,
-                    _dataFinder,
-                    (ex) => { });
-                return _startFind;
-            }
-        }
-
-        private IBaseCommand _startAuto;
-        public IBaseCommand StartAuto
-        {
-            get
-            {
-                _startAuto ??= new StartAutoCommand(
-                    this,
-                    _autoExecutionCommandsService);
-                return _startAuto;
-            }
-        }
-
-        private IBaseCommand _stopAuto;
-        public IBaseCommand StopAuto
-        {
-            get
-            {
-                _stopAuto ??= new StopAutoCommand(
-                    this,
-                    _autoExecutionCommandsService);
-                return _stopAuto;
-            }
+            _logger.LogError(e, $"Failed: {sender?.GetType()}");
+            _dialogService.ShowError(e.ToString());
         }
 
         #endregion

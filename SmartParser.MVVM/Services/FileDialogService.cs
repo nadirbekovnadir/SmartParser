@@ -8,7 +8,20 @@ namespace SmartParser.MVVM.Services
     {
         public void ShowMessage(string message)
         {
-            MessageBox.Show(message);
+            MessageBox.Show(
+                message,
+                "Info",
+                MessageBoxButton.OK,
+                MessageBoxImage.Information);
+        }
+
+        public void ShowError(string message)
+        {
+            MessageBox.Show(
+                message,
+                "Error",
+                MessageBoxButton.OK,
+                MessageBoxImage.Error);
         }
 
         public string FilePath { get; set; }

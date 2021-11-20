@@ -7,16 +7,16 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="..\ParserLib\*_venv\**\*">
+    <Content Include="..\SmartParser.Scripts\*_venv\**\*">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\ParserLib\DataExtractor.py" Link="Scripts\DataExtractor.py">
+    <Content Include="..\SmartParser.Scripts\DataExtractor.py" Link="Scripts\DataExtractor.py">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\ParserLib\ExtractProcess.py" Link="Scripts\ExtractProcess.py">
+    <Content Include="..\SmartParser.Scripts\ExtractProcess.py" Link="Scripts\ExtractProcess.py">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\ParserLib\RBC_Parser.py" Link="Scripts\RBC_Parser.py">
+    <Content Include="..\SmartParser.Scripts\RBC_Parser.py" Link="Scripts\RBC_Parser.py">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

@@ -1,5 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using ParserApp;
 using Serilog;
 using SmartParser.Database.Contexts;
 using SmartParser.Database.Contexts.Common;
@@ -8,16 +10,15 @@ using SmartParser.Database.Repositories.Common;
 using SmartParser.Domain.Entities;
 using SmartParser.Domain.Services;
 using SmartParser.Domain.Services.Common;
+using SmartParser.MVVM.Commands;
 using SmartParser.MVVM.Services;
 using SmartParser.MVVM.Services.Common;
 using SmartParser.MVVM.Stores;
 using SmartParser.MVVM.ViewModels;
 using System;
 using System.Windows;
-using SmartParser.MVVM.Commands;
-using SmartParser.MVVM.Commands.Common;
 
-namespace ParserApp
+namespace SmartParser.MVVM
 {
 	/// <summary>
 	/// Interaction logic for App.xaml
@@ -32,7 +33,11 @@ namespace ParserApp
                 .UseSerilog((host, loggerConfig) =>
                 {
                     loggerConfig
-                        .WriteTo.File("log.txt", rollingInterval: RollingInterval.Day)
+                        .Enrich.FromLogContext()
+                        .WriteTo.File(
+                            "log.txt", 
+                            rollingInterval: RollingInterval.Day,
+                            outputTemplate: "[{Timestamp:HH:mm:ss}] [{Level:u3}] {SourceContext} - {Message}{NewLine}{Exception}")
                         .WriteTo.Debug()
                         .MinimumLevel.Information(); // MinimumLevel.Override
                 })
@@ -42,7 +47,7 @@ namespace ParserApp
                     AddServices(services);
                     AddStores(services);
                     AddViewModels(services);
-                    //AddCommands(services);
+                    AddCommands(services);
 
                     services.AddSingleton(s => new MainWindow()
                     {
@@ -52,11 +57,6 @@ namespace ParserApp
                 })
                 .Build();
         }
-
-		//private void AddCommands(IServiceCollection services)
-		//{
-  //          services.AddSingleton<OpenOutputDirectoryCommand>();
-		//}
 
 
 		#region HostBuilder methods
@@ -90,6 +90,11 @@ namespace ParserApp
         {
             services.AddSingleton<IContext, NewsContext>();
             services.AddSingleton<IRepository<NewsEntity>, NewsRepository>();
+        }
+
+        private void AddCommands(IServiceCollection services)
+        {
+
         }
 
         #endregion

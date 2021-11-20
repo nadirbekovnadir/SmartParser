@@ -7,7 +7,6 @@ namespace SmartParser.MVVM.Commands.Common
 	public abstract class AsyncBaseCommand : IBaseCommand
     {
         private bool _isExecuting;
-        private readonly Action<Exception> _onException;
         private Dispatcher _dispatcher = Dispatcher.CurrentDispatcher;
 
         public bool IsExecuting
@@ -25,11 +24,7 @@ namespace SmartParser.MVVM.Commands.Common
         }
 
         public event EventHandler? CanExecuteChanged;
-
-        public AsyncBaseCommand(Action<Exception> onException)
-        {
-            _onException = onException;
-        }
+        public event EventHandler<Exception>? OnException;
 
         public virtual bool CanExecute(object? parameter)
         {
@@ -38,24 +33,24 @@ namespace SmartParser.MVVM.Commands.Common
 
         public virtual async void Execute(object? parameter)
         {
-            await ExecuteWithTask(parameter);
+            await ExecuteAsync(parameter);
         }
 
-        public virtual async Task ExecuteWithTask(object? parameter)
+        public virtual async Task ExecuteAsync(object? parameter)
         {
             IsExecuting = true;
             try
             {
-                await ExecuteAsync(parameter);
+                await Execution(parameter);
             }
             catch (Exception ex)
             {
-                _onException?.Invoke(ex);
+                OnException?.Invoke(this, ex);
             }
             IsExecuting = false;
         }
 
-        protected abstract Task ExecuteAsync(object? parameter);
+        protected abstract Task Execution(object? parameter);
 
         public virtual void RaiseCanExecuteChanged()
         {

@@ -1,4 +1,5 @@
-﻿using SmartParser.Domain.Entities;
+﻿using Microsoft.Extensions.Logging;
+using SmartParser.Domain.Entities;
 using SmartParser.Domain.Services.Common;
 using SmartParser.MVVM.Commands.Common;
 using SmartParser.MVVM.Stores;
@@ -16,29 +17,32 @@ namespace SmartParser.MVVM.Commands
     {
         private readonly PathesParams _pathes;
         private readonly FindParams _find;
-
+        private readonly ILogger _logger;
         private readonly WordsStore _wordsStore;
         private readonly NewsStore _newsStore;
         private readonly INewsFinder _dataFinder;
 
         public StartFindCommand(
             ProcessesViewModel vm,
+            ILogger logger,
             WordsStore wordsStore,
             NewsStore newsStore,
-            INewsFinder dataFinder,
-            Action<Exception> onException)
-            : base(onException)
+            INewsFinder dataFinder)
         {
             _pathes = vm.Pathes;
             _find = vm.Find;
+
+            _logger = logger;
 
             _wordsStore = wordsStore;
             _newsStore = newsStore;
             _dataFinder = dataFinder;
         }
 
-        protected async override Task ExecuteAsync(object? parameter)
+        protected async override Task Execution(object? parameter)
         {
+            _logger.LogInformation("Finding started");
+
             List<string> patterns = new List<string>(_wordsStore.Words);
 
             // Можно конечно просто очистить список store а в конце вызвать метод, говорящий о том, что сущности обновились
@@ -53,6 +57,12 @@ namespace SmartParser.MVVM.Commands
                 findedAll.Add(_dataFinder.News);
             }
 
+            int allCount = findedAll.SelectMany(l => l).Count();
+            int newCount = findedNew.SelectMany(l => l).Count();
+
+            _logger.LogInformation(
+                $"Find: all - {allCount}, new - {newCount}");
+
             _newsStore.FindedAll = findedAll;
             _newsStore.FindedNew = findedNew;
   
@@ -63,7 +73,7 @@ namespace SmartParser.MVVM.Commands
             if (!Directory.Exists(dir))
                 Directory.CreateDirectory(dir);
 
-            if (_find.SaveAll && _newsStore.FindedAll.Count != 0)
+            if (_find.SaveAll && allCount != 0)
             {
                 var sheetes = new List<string>();
                 var entities = new List<List<NewsEntity>>();
@@ -75,9 +85,11 @@ namespace SmartParser.MVVM.Commands
                 }
 
                 NewsEntity.SaveToExcel(entities, dir, "All_" + timestamp, sheetes);
+
+                _logger.LogInformation($"All saved to: {Path.Join(dir, "All_" + timestamp)}");
             }
 
-            if (_find.SaveNew && _newsStore.FindedNew.SelectMany(o => o).Any())
+            if (_find.SaveNew && newCount != 0)
             {
                 var sheetes = new List<string>();
                 var entities = new List<List<NewsEntity>>();
@@ -100,12 +112,17 @@ namespace SmartParser.MVVM.Commands
 					{
                          NewsEntity.AppendToExcel(entities, lastFile.FullName, sheetes);
 
+                        _logger.LogInformation($"New appended to: {lastFile.FullName}");
+
                         return;
                     }
                 }
 
                 NewsEntity.SaveToExcel(entities, dir, "New_" + timestamp, sheetes);
+                _logger.LogInformation($"New saved to: {Path.Join(dir, "New_" + timestamp)}");
             }
+
+            _logger.LogInformation("Finding ended");
         }
 
 

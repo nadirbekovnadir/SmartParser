@@ -1,4 +1,5 @@
-﻿using SmartParser.MVVM.Commands.Common;
+﻿using Microsoft.Extensions.Logging;
+using SmartParser.MVVM.Commands.Common;
 using SmartParser.MVVM.Services.Common;
 using SmartParser.MVVM.ViewModels;
 using SmartParser.MVVM.ViewModels.Parameters;
@@ -11,18 +12,23 @@ namespace SmartParser.MVVM.Commands
 {
 	public class StartAutoCommand : BaseCommand
     {
-        private AutoParams _autoParams;
-        private IBaseCommand _startParseCommand;
-        private IBaseCommand _startFindCommand;
-        private IAutoExecutionCommandsService _autoExecutionService;
+        private readonly AutoParams _autoParams;
+        private readonly IBaseCommand _startParseCommand;
+        private readonly IBaseCommand _startFindCommand;
+        private readonly ILogger _logger;
+        private readonly IAutoExecutionCommandsService _autoExecutionService;
 
 		public StartAutoCommand(
             ProcessesViewModel vm,
-            IAutoExecutionCommandsService autoExecutionService) 
+            ILogger logger,
+            IAutoExecutionCommandsService autoExecutionService)
         {
             _autoParams = vm.Auto;
             _startParseCommand = vm.StartParse;
             _startFindCommand = vm.StartFind;
+
+            _logger = logger;
+
             _autoExecutionService = autoExecutionService;
 
             _autoParams.PropertyChanged += AutoParams_PropertyChanged;
@@ -36,8 +42,10 @@ namespace SmartParser.MVVM.Commands
             RaiseCanExecuteChanged();
         }
 
-        public override void Execute(object? parameter)
+        public override void Execution(object? parameter)
         {
+            _logger.LogInformation("Auto started");
+
             List<ICommand> commands = new List<ICommand>();
             List<Object?> parameters = new List<Object?>();
 
@@ -55,6 +63,8 @@ namespace SmartParser.MVVM.Commands
 
             _autoExecutionService.Start(commands, parameters, TimeSpan.FromMinutes(_autoParams.DelayMinutes));
             _autoParams.IsRunning = _autoExecutionService.IsRunning;
+
+            _logger.LogInformation("Auto ended");
         }
 
         public override bool CanExecute(object? parameter)

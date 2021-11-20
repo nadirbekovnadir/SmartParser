@@ -38,7 +38,7 @@ namespace SmartParser.MVVM.Services
 
                 if (command is AsyncBaseCommand asyncCommand)
                 {
-                    await asyncCommand.ExecuteWithTask(parameter);
+                    await asyncCommand.ExecuteAsync(parameter);
                 }
                 else
                 {

@@ -9,6 +9,7 @@ namespace SmartParser.MVVM.Services.Common
     public interface IDialogService
     {
         void ShowMessage(string message);   // показ сообщения
+        void ShowError(string message);
 
         string FilePath { get; set; }   // путь к выбранному файлу
         bool OpenFileDialog();  // открытие файла

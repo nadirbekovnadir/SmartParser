@@ -18,8 +18,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ModelsLibrary\SmartParser.Domain.csproj" />
     <ProjectReference Include="..\SmartParser.Database\SmartParser.Database.csproj" />
+    <ProjectReference Include="..\SmartParser.Domain\SmartParser.Domain.csproj" />
   </ItemGroup>
 
 </Project>
