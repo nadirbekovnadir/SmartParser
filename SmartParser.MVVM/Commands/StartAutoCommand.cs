@@ -47,7 +47,7 @@ namespace SmartParser.MVVM.Commands
             _logger.LogInformation("Auto started");
 
             List<ICommand> commands = new List<ICommand>();
-            List<Object?> parameters = new List<Object?>();
+            List<object?> parameters = new List<object?>();
 
             if (_autoParams.MustParse)
             {

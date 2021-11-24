@@ -36,7 +36,7 @@ namespace SmartParser.MVVM.ViewModels.Parameters
             set
             {
                 _mustFind = value;
-                OnPropertyChanged(nameof(IsRunning));
+                OnPropertyChanged(nameof(MustFind));
             }
         }
 
@@ -50,7 +50,5 @@ namespace SmartParser.MVVM.ViewModels.Parameters
                 OnPropertyChanged(nameof(IsRunning));
             }
         }
-
-		public Action<object?, PropertyChangedEventArgs> PropertyChanged { get; internal set; }
 	}
 }
