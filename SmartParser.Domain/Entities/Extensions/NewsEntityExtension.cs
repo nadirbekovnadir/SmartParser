@@ -107,6 +107,29 @@ namespace SmartParser.Domain.Entities
 
         private static void SaveToExcel(List<NewsEntity> entities, ExcelMapper excelMapper, string path, string sheetName)
         {
+            var truncate = (int maxLength, string value) =>
+            {
+                if (value.Length > maxLength) {
+                    return value.Substring(0, maxLength);
+                }
+                return value;
+            };
+
+            var mapper = (NewsEntity entity) =>
+            {
+                const int maxLength = 32767;
+
+                entity.Name = truncate(maxLength, entity.Name);
+                entity.Title = truncate(maxLength, entity.Title);
+                entity.Description = truncate(maxLength, entity.Description);
+                if (entity.Link.Length > maxLength) 
+                {
+                    entity.Link = "Link is too long!";
+                }
+            };
+
+            Parallel.ForEach(entities, mapper);
+
             excelMapper.Save(path, entities, sheetName);
         }
         
